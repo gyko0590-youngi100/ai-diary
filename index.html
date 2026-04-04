@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>맥미니 AI 비서 셋팅 일기 | M1 Mac Mini + OpenClaw + Claude</title>
+  <title>[AI 비서 키우기 #1] 코딩 1도 모르는 내가 4시간만에 나만의 AI 비서 "용"을 만들었다</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -419,6 +419,48 @@
       color: var(--accent-green);
     }
 
+    /* 큰 그림 섹션 */
+    .big-picture {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 60px;
+    }
+
+    .big-picture-item {
+      margin-bottom: 24px;
+    }
+
+    .big-picture-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .big-picture-item h4 {
+      color: var(--accent-purple);
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .big-picture-item ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .big-picture-item li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      color: var(--text-secondary);
+    }
+
+    .big-picture-item li::before {
+      content: '•';
+      position: absolute;
+      left: 8px;
+      color: var(--accent-green);
+    }
+
     /* 다음 단계 */
     .next-steps {
       background: var(--bg-card);
@@ -467,6 +509,30 @@
       color: var(--text-secondary);
     }
 
+    /* 배운 것 테이블 */
+    .learned-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+    }
+
+    .learned-table th,
+    .learned-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .learned-table th {
+      color: var(--accent-purple);
+      font-weight: 600;
+    }
+
+    .learned-table td:first-child {
+      color: var(--accent-blue);
+      font-weight: 500;
+    }
+
     /* 푸터 */
     .footer {
       text-align: center;
@@ -494,6 +560,21 @@
       font-size: 0.85rem;
       color: var(--text-secondary);
       opacity: 0.7;
+    }
+
+    /* 인용문 */
+    .quote-box {
+      background: var(--bg-tertiary);
+      border-left: 4px solid var(--accent-purple);
+      padding: 20px 24px;
+      margin: 24px 0;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .quote-box p {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text-primary);
     }
 
     /* 반응형 */
@@ -532,28 +613,27 @@
     <div class="hero-content">
       <div class="hero-badge">
         <span class="dot"></span>
-        <span>2026년 4월 3일 금요일</span>
+        <span>AI 비서 키우기 #1</span>
       </div>
       
-      <h1>맥미니로 AI 비서<br>셋팅하기</h1>
+      <h1>코딩 1도 모르는 내가<br>AI 비서 "용"을 만들었다</h1>
       
       <p class="hero-subtitle">
-        M1 Mac Mini에 OpenClaw + Claude Opus 4.5를 연동하고,
-        텔레그램으로 언제 어디서든 AI 비서를 사용할 수 있게 만든 여정
+        GPTers 웨비나에서 OpenClaw를 알게 되고, Claude와 대화하며 4시간 만에 나만의 AI 비서를 탄생시킨 이야기
       </p>
 
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-value">4+</div>
-          <div class="stat-label">시간 소요</div>
+          <div class="stat-value">4h</div>
+          <div class="stat-label">삽질 시간</div>
         </div>
         <div class="stat-item">
-          <div class="stat-value">15+</div>
-          <div class="stat-label">문제 해결</div>
+          <div class="stat-value">0</div>
+          <div class="stat-label">코딩 경험</div>
         </div>
         <div class="stat-item">
           <div class="stat-value">1</div>
-          <div class="stat-label">AI 비서 완성</div>
+          <div class="stat-label">AI 비서 탄생</div>
         </div>
       </div>
     </div>
@@ -567,41 +647,95 @@
   <!-- 메인 컨텐츠 -->
   <main class="container">
     
-    <!-- 시스템 정보 -->
-    <p class="section-title">System Info</p>
-    <h2 class="section-heading">내 환경</h2>
+    <!-- 왜 시작했나 -->
+    <p class="section-title">The Beginning</p>
+    <h2 class="section-heading">🤔 왜 시작했나?</h2>
+    
+    <div class="step-card">
+      <p class="step-content">
+        평소 AI에 관심이 있어서 이것저것 찾아보다가 <strong>GPTers(챗지피터스)</strong>를 알게 됐다.
+        <br><br>
+        거기서 무료 웨비나를 들었는데, <strong>OpenClaw</strong>라는 걸 소개해줬다.
+      </p>
+      <div class="quote-box">
+        <p>"카톡처럼 그냥 메시지 보내면 AI가 답해요"</p>
+      </div>
+      <p class="step-content">
+        <strong>이거다!</strong> 싶었다.
+        <br><br>
+        그리고 Claude와 대화하면서 4시간 만에 나만의 비서 <strong>"용"</strong>을 만들었다.
+      </p>
+    </div>
+
+    <!-- 큰 그림 -->
+    <p class="section-title">Big Picture</p>
+    <h2 class="section-heading">🎯 시작 전에 그린 큰 그림</h2>
+
+    <div class="big-picture">
+      <div class="big-picture-item">
+        <h4>1️⃣ 내가 하는 일들 정의</h4>
+        <ul>
+          <li>업무 기획 & 아이디어 지원</li>
+          <li>일정 관리 & 알림</li>
+          <li>생활 관리 (소모품, 건강, 재정)</li>
+          <li>여행 계획 & 추천</li>
+        </ul>
+      </div>
+
+      <div class="big-picture-item">
+        <h4>2️⃣ 컨셉 설정: 🎖️ 용기백배 특수부대</h4>
+        <p class="step-content">
+          나는 "대장님", AI 비서는 "참모"라는 군대 컨셉을 만들었다.
+          <br>
+          딱딱하지 않고 유머 있게, 근데 일은 칼같이 하는 비서.
+        </p>
+      </div>
+
+      <div class="big-picture-item">
+        <h4>3️⃣ 첫 번째 비서: "용" 🐉</h4>
+        <ul>
+          <li>🫡 "용, 대기 중입니다!"</li>
+          <li>📢 "보고드립니다!"</li>
+          <li>🔍 "정찰 중입니다..."</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 준비물 -->
+    <p class="section-title">What You Need</p>
+    <h2 class="section-heading">📦 준비물</h2>
     
     <div class="system-card">
       <div class="system-grid">
         <div class="system-item">
           <div class="system-icon">🖥️</div>
-          <div class="system-label">기기</div>
-          <div class="system-value">Mac Mini</div>
+          <div class="system-label">하드웨어</div>
+          <div class="system-value">맥미니 M1</div>
         </div>
         <div class="system-item">
-          <div class="system-icon">⚡</div>
-          <div class="system-label">칩셋</div>
-          <div class="system-value">Apple M1</div>
+          <div class="system-icon">💳</div>
+          <div class="system-label">구독</div>
+          <div class="system-value">Claude Max (월 18만원)</div>
         </div>
         <div class="system-item">
-          <div class="system-icon">💿</div>
-          <div class="system-label">운영체제</div>
-          <div class="system-value">macOS 12.4</div>
+          <div class="system-icon">💪</div>
+          <div class="system-label">마음가짐</div>
+          <div class="system-value">삽질 각오</div>
         </div>
         <div class="system-item">
           <div class="system-icon">🎯</div>
-          <div class="system-label">목표</div>
-          <div class="system-value">AI 개인비서</div>
+          <div class="system-label">코딩 실력</div>
+          <div class="system-value">0 (진짜 0)</div>
         </div>
       </div>
     </div>
 
-    <!-- 타임라인: 기본 환경 설정 -->
+    <!-- 타임라인 -->
     <div class="timeline">
       <div class="timeline-section">
         <div class="timeline-section-title">
-          <div class="timeline-section-icon install">🍺</div>
-          <h3>기본 환경 설정</h3>
+          <div class="timeline-section-icon install">💻</div>
+          <h3>삽질의 시작</h3>
         </div>
 
         <div class="step-card">
@@ -609,8 +743,31 @@
             <span class="step-number">STEP 01</span>
             <span class="step-status status-success">완료</span>
           </div>
-          <h4 class="step-title">Homebrew 설치</h4>
-          <p class="step-content">맥용 패키지 매니저 설치. macOS 12.4라서 경고가 떴지만 M1 칩이면 문제없이 진행 가능.</p>
+          <h4 class="step-title">터미널이 뭔데?</h4>
+          <p class="step-content">
+            맥에서 <code>Command + Space</code> 누르고 "터미널" 검색.
+            <br><br>
+            나는 <strong>까만 화면</strong>이 나올 줄 알았는데... <strong>흰색 창</strong>이었다. (설정에 따라 다르다고 함)
+            <br><br>
+            어쨌든 여기에 명령어를 입력하면 컴퓨터가 일을 한다. 무섭지만 일단 시작!
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 02</span>
+            <span class="step-status status-success">완료</span>
+          </div>
+          <h4 class="step-title">Claude한테 물어보며 시작</h4>
+          <p class="step-content">
+            "나만의 AI 비서를 만들고 싶어. 도와줘."
+            <br><br>
+            Claude가 친절하게 알려줬다. 먼저 <strong>Homebrew</strong>를 설치하란다.
+            <br><br>
+            <strong>Homebrew = 맥용 앱스토어 (개발자 버전)</strong>
+            <br>
+            개발자들은 앱스토어 대신 이걸로 프로그램을 설치한다.
+          </p>
           <div class="code-block">
             <code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
           </div>
@@ -618,17 +775,19 @@
 
         <div class="step-card">
           <div class="step-header">
-            <span class="step-number">STEP 02</span>
+            <span class="step-number">STEP 03</span>
             <span class="step-status status-error">에러</span>
           </div>
-          <h4 class="step-title">brew: command not found</h4>
-          <p class="step-content">Homebrew 설치 후 brew 명령어를 인식하지 못하는 문제 발생.</p>
+          <h4 class="step-title">첫 번째 에러 — "명령어를 찾을 수 없습니다"</h4>
+          <p class="step-content">설치는 됐는데 <code>brew</code> 명령어가 안 먹힘.</p>
           <div class="code-block error">
             <code>zsh: command not found: brew</code>
           </div>
+          <p class="step-content">
+            <strong>비유하면:</strong> 앱은 깔았는데 바탕화면에 아이콘이 안 생긴 것.
+          </p>
           <div class="solution-box">
-            <h4>💡 해결 방법</h4>
-            <p>PATH 환경변수에 Homebrew 경로 추가</p>
+            <h4>💡 해결</h4>
             <div class="code-block">
               <code>echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile<br>eval "$(/opt/homebrew/bin/brew shellenv)"</code>
             </div>
@@ -636,97 +795,56 @@
         </div>
       </div>
 
-      <!-- 타임라인: Docker 시도 -->
       <div class="timeline-section">
         <div class="timeline-section-title">
-          <div class="timeline-section-icon error">🐳</div>
-          <h3>Docker 설치 시도 (실패)</h3>
-        </div>
-
-        <div class="step-card">
-          <div class="step-header">
-            <span class="step-number">STEP 03</span>
-            <span class="step-status status-error">실패</span>
-          </div>
-          <h4 class="step-title">Docker Desktop 호환성 문제</h4>
-          <p class="step-content">처음에는 Open WebUI를 Docker로 설치하려 했으나, Docker Desktop이 macOS Sonoma 이상만 지원해서 실패.</p>
-          <div class="code-block error">
-            <code>Error: This software does not run on macOS versions older than Sonoma.</code>
-          </div>
-          <p class="step-content" style="margin-top: 16px;">Colima + QEMU 조합도 시도했으나 설치 시간이 너무 오래 걸려서 방향 전환.</p>
-        </div>
-      </div>
-
-      <!-- 타임라인: 텔레그램 봇 -->
-      <div class="timeline-section">
-        <div class="timeline-section-title">
-          <div class="timeline-section-icon config">🤖</div>
-          <h3>텔레그램 봇 만들기 (첫 번째 시도)</h3>
+          <div class="timeline-section-icon error">💀</div>
+          <h3>여기서 2시간 날림...</h3>
         </div>
 
         <div class="step-card">
           <div class="step-header">
             <span class="step-number">STEP 04</span>
-            <span class="step-status status-success">완료</span>
+            <span class="step-status status-fixed">진로 변경</span>
           </div>
-          <h4 class="step-title">Python 봇 직접 제작</h4>
-          <p class="step-content">Docker 대신 Python으로 직접 텔레그램 봇을 만들기로 결정. BotFather로 봇 토큰 발급받고, Claude API 키 발급.</p>
-          <div class="code-block">
-            <code>pip3 install python-telegram-bot anthropic</code>
+          <h4 class="step-title">Claude와 싸워가며...</h4>
+          <p class="step-content">
+            GPTers 웨비나에서 어깨너머로 본 내용이랑 <strong>너무 달랐다.</strong>
+            <br><br>
+            Claude가 알려주는 대로 했는데 자꾸 에러.
+            <br>
+            Docker 설치? 안 됨. Python 봇? API 크레딧 없어서 안 됨.
+            <br><br>
+            <strong>Claude와 싸워가며</strong> (진짜 싸웠다) 결국 결론 내림:
+          </p>
+          <div class="quote-box">
+            <p>"야, 그냥 OpenClaw 설치하는 것만 도와줘!"</p>
           </div>
+          <p class="step-content">진로 변경. OpenClaw 직접 설치하기로 했다.</p>
+        </div>
+      </div>
+
+      <div class="timeline-section">
+        <div class="timeline-section-title">
+          <div class="timeline-section-icon success">🌟</div>
+          <h3>드디어 희망! OpenClaw</h3>
         </div>
 
         <div class="step-card">
           <div class="step-header">
             <span class="step-number">STEP 05</span>
-            <span class="step-status status-error">에러</span>
-          </div>
-          <h4 class="step-title">API 크레딧 없음</h4>
-          <p class="step-content">봇은 만들었지만, Claude API 크레딧이 없어서 작동하지 않음. Claude Max 구독과 API 크레딧은 별개라는 걸 알게 됨.</p>
-          <div class="code-block error">
-            <code>Error: Your credit balance is too low to access the Anthropic API.</code>
-          </div>
-        </div>
-      </div>
-
-      <!-- 타임라인: OpenClaw -->
-      <div class="timeline-section">
-        <div class="timeline-section-title">
-          <div class="timeline-section-icon success">🦞</div>
-          <h3>OpenClaw 설치</h3>
-        </div>
-
-        <div class="step-card">
-          <div class="step-header">
-            <span class="step-number">STEP 06</span>
             <span class="step-status status-success">완료</span>
           </div>
-          <h4 class="step-title">Node.js 설치</h4>
-          <p class="step-content">OpenClaw 실행을 위해 Node.js 설치. Homebrew에 문제가 있어서 공식 사이트에서 직접 다운로드.</p>
-        </div>
-
-        <div class="step-card">
-          <div class="step-header">
-            <span class="step-number">STEP 07</span>
-            <span class="step-status status-success">완료</span>
-          </div>
-          <h4 class="step-title">OpenClaw 설치 및 설정</h4>
-          <p class="step-content">OpenClaw 설치 후 DuckDuckGo 검색, 스킬들 설정.</p>
+          <h4 class="step-title">OpenClaw 설치</h4>
+          <p class="step-content">
+            <strong>OpenClaw</strong> = 여러 메신저(텔레그램, 카톡, 슬랙 등)로 AI랑 대화할 수 있게 해주는 프로그램
+          </p>
           <div class="code-block">
             <code>npx openclaw onboard</code>
           </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-header">
-            <span class="step-number">STEP 08</span>
-            <span class="step-status status-error">에러</span>
-          </div>
-          <h4 class="step-title">grammy 모듈 없음</h4>
-          <p class="step-content">텔레그램 플러그인이 grammy 모듈을 찾지 못하는 문제 반복 발생.</p>
+          <p class="step-content">이 한 줄로 기본 설치 완료!</p>
+          <p class="step-content">근데 또 에러... <code>grammy 모듈을 찾을 수 없습니다</code></p>
           <div class="solution-box">
-            <h4>💡 해결 방법</h4>
-            <p>OpenClaw를 전역 설치하니 해결됨</p>
+            <h4>💡 해결: 전역 설치로 바꿈</h4>
             <div class="code-block">
               <code>sudo npm install -g openclaw</code>
             </div>
@@ -734,136 +852,147 @@
         </div>
       </div>
 
-      <!-- 타임라인: Claude 연결 -->
       <div class="timeline-section">
         <div class="timeline-section-title">
-          <div class="timeline-section-icon success">🔐</div>
-          <h3>Claude OAuth 연결</h3>
+          <div class="timeline-section-icon config">🍯</div>
+          <h3>핵심 꿀팁! Claude 연결</h3>
         </div>
 
         <div class="step-card">
           <div class="step-header">
-            <span class="step-number">STEP 09</span>
+            <span class="step-number">STEP 06</span>
             <span class="step-status status-success">핵심!</span>
           </div>
-          <h4 class="step-title">Claude CLI로 OAuth 토큰 발급</h4>
-          <p class="step-content">Claude Max 구독을 활용해 API 크레딧 없이 사용하는 방법 발견! Claude CLI로 OAuth 토큰을 발급받아 OpenClaw에 연결.</p>
+          <h4 class="step-title">OAuth 토큰으로 무료 사용</h4>
+          <p class="step-content">
+            여기가 <strong>가장 중요한 부분</strong>.
+            <br><br>
+            Claude 구독자는 <strong>OAuth 토큰</strong>이라는 걸로 추가 비용 없이 API를 쓸 수 있다.
+          </p>
           <div class="code-block">
-            <code>claude setup-token</code>
+            <code>claude setup-token<br>openclaw models auth paste-token --provider anthropic</code>
           </div>
-          <div class="code-block">
-            <code>openclaw models auth paste-token --provider anthropic</code>
+          <div class="solution-box">
+            <h4>💡 비유</h4>
+            <p>
+              • 일반 API = 선불 교통카드 (충전해야 씀)<br>
+              • OAuth 토큰 = 정기권 (구독하면 무제한)
+            </p>
           </div>
+          <p class="step-content">
+            나는 이미 Claude Max 구독 중이니까 <strong>정기권</strong> 쓰면 되는 거였다!
+          </p>
         </div>
 
         <div class="step-card">
           <div class="step-header">
-            <span class="step-number">STEP 10</span>
+            <span class="step-number">STEP 07</span>
             <span class="step-status status-success">완료</span>
           </div>
-          <h4 class="step-title">Claude Opus 4.5 기본 모델 설정</h4>
-          <p class="step-content">기본 모델을 최강 모델인 Claude Opus 4.5로 설정.</p>
+          <h4 class="step-title">텔레그램 연결 — 완성!</h4>
+          <p class="step-content">
+            텔레그램에서 <strong>@BotFather</strong>한테 말 걸어서 봇 만들고, 받은 토큰을 연결.
+          </p>
           <div class="code-block">
-            <code>openclaw config set agents.defaults.model anthropic/claude-opus-4-5</code>
+            <code>openclaw channels add --channel telegram --token [내봇토큰]</code>
           </div>
-        </div>
-      </div>
-
-      <!-- 타임라인: 텔레그램 연결 -->
-      <div class="timeline-section">
-        <div class="timeline-section-title">
-          <div class="timeline-section-icon success">📱</div>
-          <h3>텔레그램 연결</h3>
-        </div>
-
-        <div class="step-card">
-          <div class="step-header">
-            <span class="step-number">STEP 11</span>
-            <span class="step-status status-success">완료</span>
-          </div>
-          <h4 class="step-title">텔레그램 봇 채널 추가</h4>
-          <p class="step-content">OpenClaw에 텔레그램 봇 토큰 연결.</p>
-          <div class="code-block">
-            <code>openclaw channels add --channel telegram --token [봇토큰]</code>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-header">
-            <span class="step-number">STEP 12</span>
-            <span class="step-status status-fixed">승인 필요</span>
-          </div>
-          <h4 class="step-title">페어링 승인</h4>
-          <p class="step-content">텔레그램에서 처음 메시지를 보내면 "access not configured" 메시지가 나옴. 페어링 코드로 승인 필요.</p>
-          <div class="code-block">
-            <code>openclaw pairing approve telegram [페어링코드]</code>
-          </div>
+          <p class="step-content">
+            처음 메시지 보내면 "승인 필요"라고 나오는데, 터미널에서 승인해주면 끝!
+          </p>
         </div>
       </div>
     </div>
 
     <!-- 결과 -->
     <div class="result-section">
-      <div class="result-icon">🎉</div>
-      <h3 class="result-title">설치 성공!</h3>
+      <div class="result-icon">🐉</div>
+      <h3 class="result-title">용, 탄생!</h3>
       <p class="result-description">
-        M1 Mac Mini에서 Claude Opus 4.5를 텔레그램으로 사용할 수 있게 됐다!
+        진짜 된다. 텔레그램에서 메시지 보내면 용이 답한다.
+        <br>
+        🫡 "용, 대기 중입니다!"
       </p>
       <div class="result-features">
         <div class="result-feature">
           <span>✅</span>
-          <span>OpenClaw 설치</span>
+          <span>브라우저 안 켜도 됨</span>
         </div>
         <div class="result-feature">
           <span>✅</span>
-          <span>Claude Opus 4.5 연동</span>
+          <span>로그인 안 해도 됨</span>
         </div>
         <div class="result-feature">
           <span>✅</span>
-          <span>텔레그램 봇 연결</span>
-        </div>
-        <div class="result-feature">
-          <span>✅</span>
-          <span>OAuth 인증 (무료!)</span>
+          <span>카톡처럼 대화</span>
         </div>
       </div>
     </div>
 
+    <!-- 배운 것 -->
+    <p class="section-title">What I Learned</p>
+    <h2 class="section-heading">💡 비개발자가 배운 것</h2>
+
+    <table class="learned-table">
+      <tr>
+        <th>용어</th>
+        <th>쉬운 설명</th>
+      </tr>
+      <tr>
+        <td>터미널</td>
+        <td>컴퓨터한테 글자로 명령하는 창</td>
+      </tr>
+      <tr>
+        <td>Homebrew</td>
+        <td>맥용 앱스토어 (개발자 버전)</td>
+      </tr>
+      <tr>
+        <td>API</td>
+        <td>프로그램끼리 대화하는 방법</td>
+      </tr>
+      <tr>
+        <td>OAuth 토큰</td>
+        <td>구독권으로 무료 이용하는 열쇠</td>
+      </tr>
+      <tr>
+        <td>OpenClaw</td>
+        <td>메신저로 AI랑 대화하게 해주는 프로그램</td>
+      </tr>
+    </table>
+
     <!-- 다음 단계 -->
     <div class="next-steps">
-      <h3>🚀 다음 단계</h3>
+      <h3>🚀 다음 편 예고</h3>
       
       <div class="next-step-item">
         <div class="next-step-number">1</div>
         <div class="next-step-content">
-          <h4>용 캐릭터 스킬 적용</h4>
-          <p>SOUL.md, IDENTITY.md 등 캐릭터 설정 파일 완성하기</p>
+          <h4>AI한테 성격 부여하기</h4>
+          <p>군대식 말투로 설정! 🫡</p>
         </div>
       </div>
       
       <div class="next-step-item">
         <div class="next-step-number">2</div>
         <div class="next-step-content">
-          <h4>RTK 설치로 토큰 절약</h4>
-          <p>RTK(Rust Token Killer)로 토큰 사용량 60-90% 절감</p>
+          <h4>맥 껐다 켜도 자동으로 AI 켜지게 하기</h4>
+          <p>LaunchAgent 설정</p>
         </div>
       </div>
       
       <div class="next-step-item">
         <div class="next-step-number">3</div>
         <div class="next-step-content">
-          <h4>자동 시작 설정</h4>
-          <p>맥 부팅 시 OpenClaw 게이트웨이 자동 실행되게 설정</p>
+          <h4>메모앱(Obsidian)이랑 연동하기</h4>
+          <p>용이 메모도 관리하게!</p>
         </div>
       </div>
-      
-      <div class="next-step-item">
-        <div class="next-step-number">4</div>
-        <div class="next-step-content">
-          <h4>추가 스킬 설치</h4>
-          <p>Obsidian, Apple Reminders 등 더 많은 스킬 연동</p>
-        </div>
-      </div>
+    </div>
+
+    <div class="result-section" style="margin-top: 60px;">
+      <p style="font-size: 1.5rem; font-weight: 700;">
+        코딩 1도 몰라도 했다.<br>
+        여러분도 할 수 있다! 💪
+      </p>
     </div>
 
   </main>
@@ -871,9 +1000,11 @@
   <!-- 푸터 -->
   <footer class="footer">
     <p class="footer-text">
-      이 페이지는 <a href="https://claude.ai" class="footer-link" target="_blank">Claude</a>와 함께 작성되었습니다 🦞
+      4시간 삽질한 사람: 나 (대장님)<br>
+      탄생한 비서: 용 🐉<br>
+      도와준 AI: <a href="https://claude.ai" class="footer-link" target="_blank">Claude</a>
     </p>
-    <p class="footer-date">2026년 4월 3일 금요일</p>
+    <p class="footer-date">2026년 4월 3일</p>
   </footer>
 
 </body>
