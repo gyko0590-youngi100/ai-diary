@@ -316,388 +316,56 @@
     .log-content li { margin: 6px 0; }
 
     /* 캐릭터 카드 */
-    .char-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .char-card {
-      background: var(--bg-tertiary);
-      border-radius: 16px;
-      padding: 24px;
-      text-align: center;
-      border: 2px solid var(--border-color);
-      transition: all 0.3s;
-    }
-
-    .char-card:hover {
-      border-color: var(--accent-purple);
-      transform: translateY(-4px);
-    }
-
-    .char-card.pending { opacity: 0.5; }
-
-    .char-icon { font-size: 4rem; margin-bottom: 16px; }
-    .char-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
-    .char-role { color: var(--accent-purple); margin-bottom: 16px; }
-    .char-greeting {
-      background: var(--bg-card);
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-    }
-
-    /* 규칙 */
-    .rule-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 16px;
-      background: var(--bg-tertiary);
-      border-radius: 12px;
-      margin-bottom: 12px;
-    }
-
-    .rule-icon { font-size: 1.5rem; }
-    .rule-text { flex: 1; }
-    .rule-title { font-weight: 600; margin-bottom: 4px; }
-    .rule-desc { font-size: 0.9rem; color: var(--text-secondary); }
-
-    /* 토큰 그래프 */
-    .token-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-    }
-
-    .token-card {
-      background: var(--bg-tertiary);
-      border-radius: 16px;
-      padding: 24px;
-    }
-
-    .token-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .token-title { font-weight: 600; }
-    .token-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-green); }
-
-    .token-bar-bg {
-      height: 24px;
-      background: var(--bg-card);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-
-    .token-bar {
-      height: 100%;
-      border-radius: 12px;
-      transition: width 0.5s ease;
-    }
-
-    .token-bar.green { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
-    .token-bar.purple { background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink)); }
-    .token-bar.yellow { background: linear-gradient(90deg, var(--accent-yellow), var(--accent-orange)); }
-
-    .token-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    /* 코드 블록 */
-    .code-block {
-      background: #0a0a12;
-      border-radius: 12px;
-      padding: 20px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      line-height: 1.8;
-      overflow-x: auto;
-      white-space: pre-wrap;
-    }
-
-    .code-block .heading { color: var(--accent-purple); font-weight: bold; }
-    .code-block .key { color: var(--accent-blue); }
-    .code-block .value { color: var(--accent-green); }
-    .code-block .comment { color: #6a737d; }
-
-    /* 반응형 */
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; }
-      .arch-flow { flex-direction: column; }
-      .arch-arrow { transform: rotate(90deg); }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- 로그인 -->
-  <div class="login-screen" id="loginScreen">
-    <div class="login-box">
-      <div class="login-icon">🎖️</div>
-      <h1 class="login-title">용기백배 특수부대</h1>
-      <p class="login-subtitle">대장님 & 참모진 전용</p>
-      <input type="password" class="login-input" id="passwordInput" placeholder="••••" maxlength="10" autofocus>
-      <button class="login-btn" onclick="checkPassword()">입장하기</button>
-      <p class="login-error" id="loginError">🫡 비밀번호가 틀렸습니다!</p>
-    </div>
-  </div>
-
-  <!-- 앱 -->
-  <div class="app" id="mainApp">
-    
-    <!-- 사이드바 -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <span class="sidebar-logo-icon">🎖️</span>
-          <span>용기백배</span>
-        </div>
-      </div>
-
-      <nav class="nav-menu">
-        <div class="nav-item active" onclick="showPage('home', this)">
-          <span class="nav-icon">🏠</span>
-          <span>홈</span>
-        </div>
-        <div class="nav-item" onclick="showPage('logs', this)">
-          <span class="nav-icon">📝</span>
-          <span>업무일지</span>
-        </div>
-        <div class="nav-item" onclick="showPage('characters', this)">
-          <span class="nav-icon">🐉</span>
-          <span>캐릭터 소개</span>
-        </div>
-        <div class="nav-item" onclick="showPage('tasks', this)">
-          <span class="nav-icon">📋</span>
-          <span>업무 분장</span>
-        </div>
-        <div class="nav-item" onclick="showPage('rules', this)">
-          <span class="nav-icon">⚠️</span>
-          <span>규칙</span>
-        </div>
-        <div class="nav-item" onclick="showPage('tokens', this)">
-          <span class="nav-icon">📊</span>
-          <span>토큰 사용량</span>
-        </div>
-        <div class="nav-item" onclick="showPage('tools', this)">
-          <span class="nav-icon">🔧</span>
-          <span>사용가능 도구</span>
-        </div>
-        <div class="nav-item" onclick="showPage('memory', this)">
-          <span class="nav-icon">🧠</span>
-          <span>장기 기억</span>
-        </div>
-      </nav>
-
-      <div class="sidebar-footer">
-        <button class="logout-btn" onclick="logout()">🚪 로그아웃</button>
-      </div>
-    </aside>
-
-    <!-- 메인 -->
-    <main class="main">
-
-      <!-- 홈 -->
-      <section class="page active" id="page-home">
-        <div class="page-header">
-          <h1 class="page-title">🏠 용기백배 특수부대</h1>
-          <p class="page-subtitle">대장님의 AI 참모진 현황</p>
-        </div>
-
-        <div class="card">
-          <h3 class="card-title">👥 팀 구조도</h3>
-          <table class="team-table">
-            <thead>
-              <tr>
-                <th>에이전트</th>
-                <th>역할</th>
-                <th>모델</th>
-                <th>채널</th>
-                <th>상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="agent-name">
-                    <span class="agent-icon">🐉</span>
-                    <span>용</span>
-                  </div>
-                </td>
-                <td>참모 / 개인비서</td>
-                <td>Claude Opus 4.5</td>
-                <td>텔레그램</td>
-                <td><span class="status-badge status-active"><span class="status-dot"></span>활성</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="agent-name">
-                    <span class="agent-icon">🦁</span>
-                    <span>사자</span>
-                  </div>
-                </td>
-                <td>업무 기획</td>
-                <td>-</td>
-                <td>-</td>
-                <td><span class="status-badge status-pending"><span class="status-dot"></span>제작예정</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="agent-name">
-                    <span class="agent-icon">🦅</span>
-                    <span>독수리</span>
-                  </div>
-                </td>
-                <td>정보 수집</td>
-                <td>-</td>
-                <td>-</td>
-                <td><span class="status-badge status-pending"><span class="status-dot"></span>제작예정</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="agent-name">
-                    <span class="agent-icon">🐢</span>
-                    <span>거북이</span>
-                  </div>
-                </td>
-                <td>일정 관리</td>
-                <td>-</td>
-                <td>-</td>
-                <td><span class="status-badge status-pending"><span class="status-dot"></span>제작예정</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="card">
-          <h3 class="card-title">🏗️ 시스템 구조</h3>
-          <div class="arch-flow">
-            <div class="arch-box user">
-              <div class="arch-box-icon">👤</div>
-              <div>대장님</div>
-              <div class="arch-box-label">텔레그램 앱</div>
-            </div>
-            <div class="arch-arrow">→</div>
-            <div class="arch-box telegram">
-              <div class="arch-box-icon">📱</div>
-              <div>텔레그램 봇</div>
-              <div class="arch-box-label">@BotFather</div>
-            </div>
-            <div class="arch-arrow">→</div>
-            <div class="arch-box openclaw">
-              <div class="arch-box-icon">🦞</div>
-              <div>OpenClaw</div>
-              <div class="arch-box-label">맥미니 M1</div>
-            </div>
-            <div class="arch-arrow">→</div>
-            <div class="arch-box claude">
-              <div class="arch-box-icon">🤖</div>
-              <div>Claude</div>
-              <div class="arch-box-label">Opus 4.5</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 업무일지 -->
-      <section class="page" id="page-logs">
-        <div class="page-header">
-          <h1 class="page-title">📝 업무일지</h1>
-          <p class="page-subtitle">AI 구축 일지 요약</p>
-        </div>
-
-        <div class="log-item">
-          <div class="log-date">📅 2026-04-04 (토)</div>
-          <div class="log-content">
-            <strong>오늘의 작전</strong>
-            <ul>
-              <li>자동 시작 설정 (LaunchAgent) 완료</li>
-              <li>GitHub Pages 배포 성공</li>
-              <li>Tistory 블로그 첫 글 작성</li>
-              <li>용기백배 대시보드 제작</li>
-              <li>Playwright MCP 설치</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="log-item">
-          <div class="log-date">📅 2026-04-03 (금) — 용 탄생일 🎂</div>
-          <div class="log-content">
-            <strong>오늘의 작전</strong>
-            <ul>
-              <li>OpenClaw 설치 (4시간 삽질)</li>
-              <li>텔레그램 봇 연결</li>
-              <li>Claude Opus 4.5 연동 (OAuth)</li>
-              <li>IDENTITY.md, SOUL.md, USER.md 생성</li>
-              <li>RTK 설치 (토큰 절약)</li>
-            </ul>
-            <strong style="color: var(--accent-red);">삽질 기록</strong>
-            <ul>
-              <li>Docker Desktop → macOS 12.4 미지원</li>
-              <li>Python 봇 → API 크레딧 없음</li>
-              <li>grammy 모듈 → 전역 설치로 해결</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- 캐릭터 소개 -->
-      <section class="page" id="page-characters">
-        <div class="page-header">
-          <h1 class="page-title">🐉 캐릭터 소개</h1>
-          <p class="page-subtitle">용기백배 특수부대 참모진</p>
-        </div>
-
         <div class="char-grid">
           <div class="char-card">
             <img src="yong-character.jpg" alt="용" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 16px;">
-            <div class="char-name">용</div>
-            <div class="char-role">참모 / 개인비서</div>
-            <div class="char-greeting">🫡 용, 대기 중입니다!</div>
+            <div class="char-name">🐉 용 (龍)</div>
+            <div class="char-role">총괄 사령관 · 소령</div>
+            <div class="char-greeting">충성! 용 관련하여 보고드립니다</div>
             <div class="code-block" style="margin-top: 16px; text-align: left;">
-<span class="heading">## 시그니처 인사</span>
-• 대화 시작: 🫡 용, 대기 중입니다!
-• 임무 완료: 🫡 임무 완료했습니다!
-• 조사 중: 🔍 정찰 중입니다...
-• 실수할 때: 🫡 잘못씀돠!
+<span class="heading">## 성격</span>
+• 말이 적다. 필요한 말만 한다
+• 감정을 드러내지 않는다
+• 항상 전체 그림을 본다
+• 효율을 최우선으로 생각한다
 
-<span class="heading">## 핵심 가치</span>
-• 충성 — 대장님의 성공이 나의 성공
-• 정확 — 모르면 모른다고 말하기
-• 선제적 — 시키기 전에 먼저 챙기기
-• 유쾌함 — 유머 잃지 않기</div>
+<span class="heading">## 업무 범위</span>
+• 하루 시작 브리핑
+• 기/백/배 보고 취합 및 전달
+• 중요 의사결정 판단 지원</div>
           </div>
 
           <div class="char-card pending">
-            <div class="char-icon">🦁</div>
-            <div class="char-name">사자</div>
-            <div class="char-role">업무 기획</div>
-            <div class="char-greeting">⏳ 제작 예정</div>
+            <div class="char-icon">💪</div>
+            <div class="char-name">기 (氣)</div>
+            <div class="char-role">건강/취미 담당 · 소위</div>
+            <div class="char-greeting">충성! 기 관련하여 보고드립니다</div>
+            <div class="code-block" style="margin-top: 16px; text-align: left; font-size: 0.8rem;">
+• 콜레스테롤/위장/두피 관리
+• 알비온 온라인 공략
+• 동남아 여행 정보</div>
           </div>
 
           <div class="char-card pending">
-            <div class="char-icon">🦅</div>
-            <div class="char-name">독수리</div>
-            <div class="char-role">정보 수집</div>
-            <div class="char-greeting">⏳ 제작 예정</div>
+            <div class="char-icon">📋</div>
+            <div class="char-name">백 (百)</div>
+            <div class="char-role">업무/일정 담당 · 하사</div>
+            <div class="char-greeting">충성! 백 관련하여 보고드립니다</div>
+            <div class="code-block" style="margin-top: 16px; text-align: left; font-size: 0.8rem;">
+• 주재임원 의사결정 지원
+• 식스시그마 과제 관리
+• 석유화학/노경/환경안전</div>
           </div>
 
           <div class="char-card pending">
-            <div class="char-icon">🐢</div>
-            <div class="char-name">거북이</div>
-            <div class="char-role">일정 관리</div>
-            <div class="char-greeting">⏳ 제작 예정</div>
+            <div class="char-icon">💰</div>
+            <div class="char-name">배 (倍)</div>
+            <div class="char-role">재무/소모품 담당 · 하사</div>
+            <div class="char-greeting">충성! 배 관련하여 보고드립니다</div>
+            <div class="code-block" style="margin-top: 16px; text-align: left; font-size: 0.8rem;">
+• 지출 기록 및 패턴 분석
+• 내 집 마련 로드맵
+• 주식 장기투자 정보</div>
           </div>
         </div>
       </section>
@@ -710,41 +378,41 @@
         </div>
 
         <div class="card">
-          <h3 class="card-title">🐉 용 — 참모 / 개인비서</h3>
+          <h3 class="card-title">🐉 용 (龍) — 총괄 사령관 · 소령</h3>
           <div class="code-block">
-• 업무 기획 및 아이디어 지원
-• 일정 관리 및 알림
-• 생활 관리 (소모품, 건강, 재정)
-• 여행 계획 및 추천
-• 건강 상담 및 조언
-• 대장님과의 모든 대화 담당</div>
+• 하루 시작 브리핑 (할일 체크리스트)
+• 기/백/배 보고 취합 및 전달
+• 중요 의사결정 판단 지원
+• 답변은 5줄을 넘기지 않는다
+• 큰 흐름만 잡고 세세한 것은 해당 봇에게
+</div>
         </div>
 
         <div class="card" style="opacity: 0.5;">
-          <h3 class="card-title">🦁 사자 — 업무 기획 (제작 예정)</h3>
+          <h3 class="card-title">💪 기 (氣) — 건강/취미 담당 · 소위 (6월 예정)</h3>
           <div class="code-block">
-• 프로젝트 기획 및 관리
-• 팀장님 지시사항 정리
-• 아이디어 브레인스토밍
-• 보고서 작성</div>
+• 콜레스테롤/위장/두피 건강 관리
+• 건강검진 항목 안내 및 결과 해석
+• 알비온 온라인 공략, 게임 정보
+• 동남아 여행 정보 (맛집, 숙소, 코스)</div>
         </div>
 
         <div class="card" style="opacity: 0.5;">
-          <h3 class="card-title">🦅 독수리 — 정보 수집 (제작 예정)</h3>
+          <h3 class="card-title">📋 백 (百) — 업무/일정 담당 · 하사 (6월 예정)</h3>
           <div class="code-block">
-• 뉴스 및 트렌드 모니터링
-• 경쟁사 분석
-• 시장 조사
-• 저렴한 항공권 검색</div>
+• 주재임원 의사결정 지원 자료
+• 식스시그마 과제 관리 (DMAIC)
+• 석유화학/노경/환경안전 이슈
+• 회의 준비, 보고서 초안</div>
         </div>
 
         <div class="card" style="opacity: 0.5;">
-          <h3 class="card-title">🐢 거북이 — 일정 관리 (제작 예정)</h3>
+          <h3 class="card-title">💰 배 (倍) — 재무/소모품 담당 · 하사 (6월 예정)</h3>
           <div class="code-block">
-• 캘린더 관리
-• 미팅 일정 조율
-• 리마인더 설정
-• 소모품 구매 알림</div>
+• 지출 기록 및 주말 소비 패턴 분석
+• 내 집 마련 로드맵 (청약, 대출)
+• 주식 장기투자 정보 및 종목 분석
+• 소모품 재고 파악 및 알림</div>
         </div>
       </section>
 
