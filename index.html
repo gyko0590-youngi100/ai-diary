@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>맥미니 AI 비서 셋팅 일기 | M1 Mac Mini + OpenClaw + Claude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --bg-card: #16161f;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090a0;
+      --accent-green: #4ade80;
+      --accent-red: #f87171;
+      --accent-yellow: #fbbf24;
+      --accent-blue: #60a5fa;
+      --accent-purple: #a78bfa;
+      --accent-pink: #f472b6;
+      --accent-orange: #fb923c;
+      --border-color: #2a2a3a;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(167, 139, 250, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(244, 114, 182, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: var(--gradient-3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* 메인 컨텐츠 */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 20px;
+    }
+
+    /* 섹션 타이틀 */
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent-purple);
+      margin-bottom: 16px;
+    }
+
+    .section-heading {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 48px;
+    }
+
+    /* 시스템 정보 카드 */
+    .system-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 60px;
+    }
+
+    .system-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .system-item {
+      background: var(--bg-tertiary);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .system-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .system-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .system-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* 타임라인 */
+    .timeline {
+      position: relative;
+      padding-left: 0;
+    }
+
+    .timeline-section {
+      margin-bottom: 60px;
+    }
+
+    .timeline-section-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .timeline-section-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .timeline-section-icon.install { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .timeline-section-icon.error { background: linear-gradient(135deg, #f87171, #fb923c); }
+    .timeline-section-icon.success { background: linear-gradient(135deg, #4ade80, #22d3ee); }
+    .timeline-section-icon.config { background: linear-gradient(135deg, #a78bfa, #f472b6); }
+
+    .timeline-section h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    /* 스텝 카드 */
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .step-card:hover {
+      border-color: var(--accent-purple);
+      transform: translateY(-2px);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .step-number {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      background: var(--bg-tertiary);
+      border-radius: 20px;
+      color: var(--text-secondary);
+    }
+
+    .step-status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .status-success {
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--accent-green);
+    }
+
+    .status-error {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--accent-red);
+    }
+
+    .status-fixed {
+      background: rgba(96, 165, 250, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .step-content {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* 코드 블록 */
+    .code-block {
+      background: #0d0d12;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .code-block::before {
+      content: 'Terminal';
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      color: var(--text-secondary);
+    }
+
+    .code-block code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent-green);
+    }
+
+    .code-block.error code {
+      color: var(--accent-red);
+    }
+
+    /* 솔루션 박스 */
+    .solution-box {
+      background: rgba(74, 222, 128, 0.08);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    .solution-box h4 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-green);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    /* 결과 섹션 */
+    .result-section {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 48px 32px;
+      text-align: center;
+      margin: 60px 0;
+    }
+
+    .result-icon {
+      font-size: 4rem;
+      margin-bottom: 24px;
+    }
+
+    .result-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .result-description {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 0 auto 32px;
+    }
+
+    .result-features {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .result-feature {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-green);
+    }
+
+    /* 다음 단계 */
+    .next-steps {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .next-steps h3 {
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+    }
+
+    .next-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .next-step-item:last-child {
+      border-bottom: none;
+    }
+
+    .next-step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--bg-tertiary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .next-step-content h4 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .next-step-content p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    /* 푸터 */
+    .footer {
+      text-align: center;
+      padding: 60px 20px;
+      border-top: 1px solid var(--border-color);
+      margin-top: 80px;
+    }
+
+    .footer-text {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+
+    .footer-link {
+      color: var(--accent-purple);
+      text-decoration: none;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-date {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-stats {
+        gap: 24px;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 40px 16px;
+      }
+
+      .system-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .result-features {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 히어로 섹션 -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span>2026년 4월 3일 금요일</span>
+      </div>
+      
+      <h1>맥미니로 AI 비서<br>셋팅하기</h1>
+      
+      <p class="hero-subtitle">
+        M1 Mac Mini에 OpenClaw + Claude Opus 4.5를 연동하고,
+        텔레그램으로 언제 어디서든 AI 비서를 사용할 수 있게 만든 여정
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value">4+</div>
+          <div class="stat-label">시간 소요</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">15+</div>
+          <div class="stat-label">문제 해결</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">1</div>
+          <div class="stat-label">AI 비서 완성</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>아래로 스크롤</span>
+      <span>↓</span>
+    </div>
+  </section>
+
+  <!-- 메인 컨텐츠 -->
+  <main class="container">
+    
+    <!-- 시스템 정보 -->
+    <p class="section-title">System Info</p>
+    <h2 class="section-heading">내 환경</h2>
+    
+    <div class="system-card">
+      <div class="system-grid">
+        <div class="system-item">
+          <div class="system-icon">🖥️</div>
+          <div class="system-label">기기</div>
+          <div class="system-value">Mac Mini</div>
+        </div>
+        <div class="system-item">
+          <div class="system-icon">⚡</div>
+          <div class="system-label">칩셋</div>
+          <div class="system-value">Apple M1</div>
+        </div>
+        <div class="system-item">
+          <div class="system-icon">💿</div>
+          <div class="system-label">운영체제</div>
+          <div class="system-value">macOS 12.4</div>
+        </div>
+        <div class="system-item">
+          <div class="system-icon">🎯</div>
+          <div class="system-label">목표</div>
+          <div class="system-value">AI 개인비서</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 타임라인: 기본 환경 설정 -->
+    <div class="timeline">
+      <div class="timeline-section">
+        <div class="timeline-section-title">
+          <div class="timeline-section-icon install">🍺</div>
+          <h3>기본 환경 설정</h3>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 01</span>
+            <span class="step-status status-success">완료</span>
+          </div>
+          <h4 class="step-title">Homebrew 설치</h4>
+          <p class="step-content">맥용 패키지 매니저 설치. macOS 12.4라서 경고가 떴지만 M1 칩이면 문제없이 진행 가능.</p>
+          <div class="code-block">
+            <code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 02</span>
+            <span class="step-status status-error">에러</span>
+          </div>
+          <h4 class="step-title">brew: command not found</h4>
+          <p class="step-content">Homebrew 설치 후 brew 명령어를 인식하지 못하는 문제 발생.</p>
+          <div class="code-block error">
+            <code>zsh: command not found: brew</code>
+          </div>
+          <div class="solution-box">
+            <h4>💡 해결 방법</h4>
+            <p>PATH 환경변수에 Homebrew 경로 추가</p>
+            <div class="code-block">
+              <code>echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile<br>eval "$(/opt/homebrew/bin/brew shellenv)"</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 타임라인: Docker 시도 -->
+      <div class="timeline-section">
+        <div class="timeline-section-title">
+          <div class="timeline-section-icon error">🐳</div>
+          <h3>Docker 설치 시도 (실패)</h3>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 03</span>
+            <span class="step-status status-error">실패</span>
+          </div>
+          <h4 class="step-title">Docker Desktop 호환성 문제</h4>
+          <p class="step-content">처음에는 Open WebUI를 Docker로 설치하려 했으나, Docker Desktop이 macOS Sonoma 이상만 지원해서 실패.</p>
+          <div class="code-block error">
+            <code>Error: This software does not run on macOS versions older than Sonoma.</code>
+          </div>
+          <p class="step-content" style="margin-top: 16px;">Colima + QEMU 조합도 시도했으나 설치 시간이 너무 오래 걸려서 방향 전환.</p>
+        </div>
+      </div>
+
+      <!-- 타임라인: 텔레그램 봇 -->
+      <div class="timeline-section">
+        <div class="timeline-section-title">
+          <div class="timeline-section-icon config">🤖</div>
+          <h3>텔레그램 봇 만들기 (첫 번째 시도)</h3>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 04</span>
+            <span class="step-status status-success">완료</span>
+          </div>
+          <h4 class="step-title">Python 봇 직접 제작</h4>
+          <p class="step-content">Docker 대신 Python으로 직접 텔레그램 봇을 만들기로 결정. BotFather로 봇 토큰 발급받고, Claude API 키 발급.</p>
+          <div class="code-block">
+            <code>pip3 install python-telegram-bot anthropic</code>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 05</span>
+            <span class="step-status status-error">에러</span>
+          </div>
+          <h4 class="step-title">API 크레딧 없음</h4>
+          <p class="step-content">봇은 만들었지만, Claude API 크레딧이 없어서 작동하지 않음. Claude Max 구독과 API 크레딧은 별개라는 걸 알게 됨.</p>
+          <div class="code-block error">
+            <code>Error: Your credit balance is too low to access the Anthropic API.</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- 타임라인: OpenClaw -->
+      <div class="timeline-section">
+        <div class="timeline-section-title">
+          <div class="timeline-section-icon success">🦞</div>
+          <h3>OpenClaw 설치</h3>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 06</span>
+            <span class="step-status status-success">완료</span>
+          </div>
+          <h4 class="step-title">Node.js 설치</h4>
+          <p class="step-content">OpenClaw 실행을 위해 Node.js 설치. Homebrew에 문제가 있어서 공식 사이트에서 직접 다운로드.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 07</span>
+            <span class="step-status status-success">완료</span>
+          </div>
+          <h4 class="step-title">OpenClaw 설치 및 설정</h4>
+          <p class="step-content">OpenClaw 설치 후 DuckDuckGo 검색, 스킬들 설정.</p>
+          <div class="code-block">
+            <code>npx openclaw onboard</code>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 08</span>
+            <span class="step-status status-error">에러</span>
+          </div>
+          <h4 class="step-title">grammy 모듈 없음</h4>
+          <p class="step-content">텔레그램 플러그인이 grammy 모듈을 찾지 못하는 문제 반복 발생.</p>
+          <div class="solution-box">
+            <h4>💡 해결 방법</h4>
+            <p>OpenClaw를 전역 설치하니 해결됨</p>
+            <div class="code-block">
+              <code>sudo npm install -g openclaw</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 타임라인: Claude 연결 -->
+      <div class="timeline-section">
+        <div class="timeline-section-title">
+          <div class="timeline-section-icon success">🔐</div>
+          <h3>Claude OAuth 연결</h3>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 09</span>
+            <span class="step-status status-success">핵심!</span>
+          </div>
+          <h4 class="step-title">Claude CLI로 OAuth 토큰 발급</h4>
+          <p class="step-content">Claude Max 구독을 활용해 API 크레딧 없이 사용하는 방법 발견! Claude CLI로 OAuth 토큰을 발급받아 OpenClaw에 연결.</p>
+          <div class="code-block">
+            <code>claude setup-token</code>
+          </div>
+          <div class="code-block">
+            <code>openclaw models auth paste-token --provider anthropic</code>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 10</span>
+            <span class="step-status status-success">완료</span>
+          </div>
+          <h4 class="step-title">Claude Opus 4.5 기본 모델 설정</h4>
+          <p class="step-content">기본 모델을 최강 모델인 Claude Opus 4.5로 설정.</p>
+          <div class="code-block">
+            <code>openclaw config set agents.defaults.model anthropic/claude-opus-4-5</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- 타임라인: 텔레그램 연결 -->
+      <div class="timeline-section">
+        <div class="timeline-section-title">
+          <div class="timeline-section-icon success">📱</div>
+          <h3>텔레그램 연결</h3>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 11</span>
+            <span class="step-status status-success">완료</span>
+          </div>
+          <h4 class="step-title">텔레그램 봇 채널 추가</h4>
+          <p class="step-content">OpenClaw에 텔레그램 봇 토큰 연결.</p>
+          <div class="code-block">
+            <code>openclaw channels add --channel telegram --token [봇토큰]</code>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">STEP 12</span>
+            <span class="step-status status-fixed">승인 필요</span>
+          </div>
+          <h4 class="step-title">페어링 승인</h4>
+          <p class="step-content">텔레그램에서 처음 메시지를 보내면 "access not configured" 메시지가 나옴. 페어링 코드로 승인 필요.</p>
+          <div class="code-block">
+            <code>openclaw pairing approve telegram [페어링코드]</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 결과 -->
+    <div class="result-section">
+      <div class="result-icon">🎉</div>
+      <h3 class="result-title">설치 성공!</h3>
+      <p class="result-description">
+        M1 Mac Mini에서 Claude Opus 4.5를 텔레그램으로 사용할 수 있게 됐다!
+      </p>
+      <div class="result-features">
+        <div class="result-feature">
+          <span>✅</span>
+          <span>OpenClaw 설치</span>
+        </div>
+        <div class="result-feature">
+          <span>✅</span>
+          <span>Claude Opus 4.5 연동</span>
+        </div>
+        <div class="result-feature">
+          <span>✅</span>
+          <span>텔레그램 봇 연결</span>
+        </div>
+        <div class="result-feature">
+          <span>✅</span>
+          <span>OAuth 인증 (무료!)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 다음 단계 -->
+    <div class="next-steps">
+      <h3>🚀 다음 단계</h3>
+      
+      <div class="next-step-item">
+        <div class="next-step-number">1</div>
+        <div class="next-step-content">
+          <h4>용 캐릭터 스킬 적용</h4>
+          <p>SOUL.md, IDENTITY.md 등 캐릭터 설정 파일 완성하기</p>
+        </div>
+      </div>
+      
+      <div class="next-step-item">
+        <div class="next-step-number">2</div>
+        <div class="next-step-content">
+          <h4>RTK 설치로 토큰 절약</h4>
+          <p>RTK(Rust Token Killer)로 토큰 사용량 60-90% 절감</p>
+        </div>
+      </div>
+      
+      <div class="next-step-item">
+        <div class="next-step-number">3</div>
+        <div class="next-step-content">
+          <h4>자동 시작 설정</h4>
+          <p>맥 부팅 시 OpenClaw 게이트웨이 자동 실행되게 설정</p>
+        </div>
+      </div>
+      
+      <div class="next-step-item">
+        <div class="next-step-number">4</div>
+        <div class="next-step-content">
+          <h4>추가 스킬 설치</h4>
+          <p>Obsidian, Apple Reminders 등 더 많은 스킬 연동</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p class="footer-text">
+      이 페이지는 <a href="https://claude.ai" class="footer-link" target="_blank">Claude</a>와 함께 작성되었습니다 🦞
+    </p>
+    <p class="footer-date">2026년 4월 3일 금요일</p>
+  </footer>
+
+</body>
+</html>
