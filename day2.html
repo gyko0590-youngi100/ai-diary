@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[AI 비서 키우기 #2] 용이 말을 배웠다! 한국어 TTS + 영상 생성 + 아침 브리핑</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --bg-card: #16161f;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090a0;
+      --accent-green: #4ade80;
+      --accent-red: #f87171;
+      --accent-yellow: #fbbf24;
+      --accent-blue: #60a5fa;
+      --accent-purple: #a78bfa;
+      --accent-pink: #f472b6;
+      --accent-orange: #fb923c;
+      --border-color: #2a2a3a;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(244, 114, 182, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+    }
+
+    /* 메인 컨텐츠 */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title .emoji {
+      font-size: 2rem;
+    }
+
+    /* 카드 */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--accent-blue);
+    }
+
+    /* 타임라인 */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -26px;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: var(--accent-purple);
+      border-radius: 50%;
+      border: 2px solid var(--bg-primary);
+    }
+
+    .timeline-time {
+      font-size: 0.85rem;
+      color: var(--accent-purple);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .timeline-content h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .timeline-content p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* 비교 테이블 */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .comparison-table th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--accent-blue);
+    }
+
+    .comparison-table tr:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .badge-success { background: rgba(74, 222, 128, 0.2); color: var(--accent-green); }
+    .badge-fail { background: rgba(248, 113, 113, 0.2); color: var(--accent-red); }
+    .badge-warning { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+
+    /* 코드 블록 */
+    .code-block {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(244, 114, 182, 0.1));
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .highlight-box h4 {
+      color: var(--accent-purple);
+      margin-bottom: 12px;
+    }
+
+    /* 스킬 그리드 */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .skill-item {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .skill-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .skill-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .skill-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* 네비게이션 */
+    .nav-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .nav-link {
+      color: var(--accent-blue);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      background: var(--bg-card);
+      transform: translateY(-2px);
+    }
+
+    /* 푸터 */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* 반응형 */
+    @media (max-width: 600px) {
+      .comparison-table { font-size: 0.85rem; }
+      .comparison-table th, .comparison-table td { padding: 8px 12px; }
+      .nav-links { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 히어로 섹션 -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        DAY 2 - 2026.04.04 (토)
+      </div>
+      <h1>🎬 용이 말을 배웠다!</h1>
+      <p class="hero-subtitle">
+        한국어 TTS 삽질기 + 영상 생성 + 아침 브리핑 자동화까지<br>
+        <strong>진짜 AI 비서</strong>가 되어가는 용
+      </p>
+    </div>
+  </section>
+
+  <!-- 메인 컨텐츠 -->
+  <main class="content">
+
+    <!-- 오늘의 목표 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">🎯</span> 오늘의 목표</h2>
+      <div class="card">
+        <p>어제 탄생한 용에게 <strong>목소리</strong>를 주고, <strong>얼굴</strong>을 보여주고, <strong>매일 아침 인사</strong>하게 만들기!</p>
+        <ul style="margin-top: 16px; padding-left: 20px; color: var(--text-secondary);">
+          <li>🗣️ 한국어로 말할 수 있게 하기 (TTS)</li>
+          <li>🎬 자기소개 영상 만들기</li>
+          <li>☀️ 평일 아침 브리핑 자동화</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 타임라인 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">⏰</span> 오늘 하루</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">09:00 ~ 11:00</div>
+          <div class="timeline-content">
+            <h3>🔧 기초 세팅</h3>
+            <p>Obsidian 설치, 디자인 스킬 설치, 뽀짝이 서재 분석</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">11:00 ~ 12:00</div>
+          <div class="timeline-content">
+            <h3>🚀 인프라 구축</h3>
+            <p>자동 시작 설정, GitHub Pages 배포, 용기백배 대시보드 제작</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">12:00 ~ 14:00</div>
+          <div class="timeline-content">
+            <h3>🔌 스킬 연동</h3>
+            <p>ElevenLabs, Stability AI, Apple Calendar/Notes, Kling AI</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">14:00 ~ 16:00</div>
+          <div class="timeline-content">
+            <h3>🎬 용 자기소개 영상 제작</h3>
+            <p>한국어 TTS 삽질 → Edge TTS 발견 → 영상 완성!</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">16:00 ~ 17:00</div>
+          <div class="timeline-content">
+            <h3>☀️ 아침 브리핑 설정</h3>
+            <p>날씨/일정/뉴스 자동 브리핑 + 미디어 전송 버그 수정</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 한국어 TTS 삽질기 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">🗣️</span> 한국어 TTS 삽질기</h2>
+      
+      <div class="card">
+        <div class="card-title">문제: 용에게 목소리를 줘야 해!</div>
+        <p>자기소개 영상을 만들려면 한국어 남자 목소리가 필요했다.<br>
+        근데... 생각보다 어려웠다. 🥲</p>
+      </div>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>서비스</th>
+            <th>한국어 남자</th>
+            <th>품질</th>
+            <th>결과</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ElevenLabs</td>
+            <td><span class="badge badge-fail">❌ 없음</span></td>
+            <td>-</td>
+            <td>영어만 네이티브</td>
+          </tr>
+          <tr>
+            <td>Google TTS</td>
+            <td><span class="badge badge-success">✅</span></td>
+            <td><span class="badge badge-warning">느림</span></td>
+            <td>로봇 같음</td>
+          </tr>
+          <tr>
+            <td>macOS Yuna</td>
+            <td><span class="badge badge-fail">❌ 여자만</span></td>
+            <td>보통</td>
+            <td>남자 없음</td>
+          </tr>
+          <tr style="background: rgba(74, 222, 128, 0.1);">
+            <td><strong>Edge TTS</strong></td>
+            <td><span class="badge badge-success">✅ InJoon</span></td>
+            <td><span class="badge badge-success">좋음</span></td>
+            <td>🏆 채택!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box">
+        <h4>💡 해결책: Microsoft Edge TTS</h4>
+        <p>무료이면서 자연스러운 한국어 남자 음성 발견!</p>
+        <div class="code-block">
+edge-tts --voice ko-KR-InJoonNeural --rate=+35% --pitch=-8Hz --text "충성!" --write-media output.mp3
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">rate로 속도 조절, pitch로 목소리 톤 조절 가능</p>
+      </div>
+    </section>
+
+    <!-- 영상 제작 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">🎬</span> 용 자기소개 영상</h2>
+      
+      <div class="card">
+        <div class="card-title">제작 과정</div>
+        <ol style="padding-left: 20px; color: var(--text-secondary);">
+          <li><strong>이미지 생성</strong> - Playground AI로 용 캐릭터 생성</li>
+          <li><strong>영상 변환</strong> - Kling AI로 Image-to-Video (7초)</li>
+          <li><strong>음성 생성</strong> - Edge TTS로 한국어 대사</li>
+          <li><strong>합성</strong> - ffmpeg로 영상 + 음성 결합</li>
+        </ol>
+      </div>
+
+      <div class="highlight-box">
+        <h4>🐉 용의 첫 마디</h4>
+        <p style="font-size: 1.1rem; font-style: italic;">"충성! 용기백배 소령 용입니다. AI 비서로서 모든 요청을 수행합니다. 언제든 불러주세요!"</p>
+      </div>
+    </section>
+
+    <!-- 연동된 스킬 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">🔌</span> 연동된 기능들</h2>
+      
+      <div class="skill-grid">
+        <div class="skill-item">
+          <div class="skill-icon">🗣️</div>
+          <div class="skill-name">Edge TTS</div>
+          <div class="skill-desc">한국어 음성 합성</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">🎬</div>
+          <div class="skill-name">Kling AI</div>
+          <div class="skill-desc">영상 생성</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">🖼️</div>
+          <div class="skill-name">Stability AI</div>
+          <div class="skill-desc">이미지 생성</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">📅</div>
+          <div class="skill-name">Apple Calendar</div>
+          <div class="skill-desc">일정 조회</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">📝</div>
+          <div class="skill-name">Apple Notes</div>
+          <div class="skill-desc">메모 관리</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">☀️</div>
+          <div class="skill-name">날씨</div>
+          <div class="skill-desc">wttr.in API</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 아침 브리핑 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">☀️</span> 아침 브리핑 자동화</h2>
+      
+      <div class="card">
+        <div class="card-title">평일 08:00 자동 브리핑</div>
+        <ul style="padding-left: 20px;">
+          <li>🌤️ <strong>날씨</strong> - 현재 위치 기준</li>
+          <li>📅 <strong>일정</strong> - 오늘/이번 주 주요 일정</li>
+          <li>📰 <strong>뉴스</strong> - 경제 2개 + AI 1개 + LG화학 (있으면)</li>
+        </ul>
+      </div>
+
+      <div class="highlight-box">
+        <h4>🐛 버그 발견 & 수정</h4>
+        <p>이미지 전송이 안 되는 버그를 발견!</p>
+        <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-secondary);">
+          <li><code>Read</code> 툴은 AI가 보는 용도 (전송 아님!)</li>
+          <li><code>openclaw message send --media</code> 로 전송해야 함</li>
+          <li>파일은 <code>~/.openclaw/media/</code> 폴더에 있어야 함</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 오늘의 교훈 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">💡</span> 오늘의 교훈</h2>
+      
+      <div class="card">
+        <ul style="padding-left: 20px;">
+          <li><strong>TTS는 Edge TTS가 답</strong> - 무료 + 자연스러운 한국어</li>
+          <li><strong>"읽었다" ≠ "보냈다"</strong> - 전송 성공 여부 반드시 확인</li>
+          <li><strong>실수는 규칙이 된다</strong> - 버그 발견 → MEMORY.md에 표준화</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2일차 성과 -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">🏆</span> 2일차 성과</h2>
+      
+      <div class="skill-grid">
+        <div class="skill-item" style="background: rgba(74, 222, 128, 0.1); border-color: var(--accent-green);">
+          <div class="skill-icon">🎬</div>
+          <div class="skill-name">자기소개 영상</div>
+          <div class="skill-desc">한국어로 말하는 용!</div>
+        </div>
+        <div class="skill-item" style="background: rgba(96, 165, 250, 0.1); border-color: var(--accent-blue);">
+          <div class="skill-icon">☀️</div>
+          <div class="skill-name">아침 브리핑</div>
+          <div class="skill-desc">평일 08:00 자동화</div>
+        </div>
+        <div class="skill-item" style="background: rgba(167, 139, 250, 0.1); border-color: var(--accent-purple);">
+          <div class="skill-icon">🔌</div>
+          <div class="skill-name">6개 스킬</div>
+          <div class="skill-desc">연동 완료</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 네비게이션 -->
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">← Day 1: 용 탄생</a>
+      <a href="yong-settings.html" class="nav-link">용기백배 대시보드 →</a>
+    </nav>
+
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p>🐉 용기백배 특수부대 | AI 비서 키우기 프로젝트</p>
+    <p style="margin-top: 8px;">
+      <a href="https://mystory12559.tistory.com" style="color: var(--accent-blue); text-decoration: none;">Tistory</a> · 
+      <a href="https://github.com/gyko0590-youngi100/ai-diary" style="color: var(--accent-blue); text-decoration: none;">GitHub</a>
+    </p>
+  </footer>
+
+</body>
+</html>
