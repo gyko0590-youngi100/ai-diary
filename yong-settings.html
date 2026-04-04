@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>용의 설정 파일들 | AI 비서 "용"의 내부 구조</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --bg-card: #16161f;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090a0;
+      --accent-green: #4ade80;
+      --accent-red: #f87171;
+      --accent-yellow: #fbbf24;
+      --accent-blue: #60a5fa;
+      --accent-purple: #a78bfa;
+      --accent-pink: #f472b6;
+      --accent-orange: #fb923c;
+      --border-color: #2a2a3a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* 헤더 */
+    .header {
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .nav-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--accent-purple);
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+
+    /* 메인 컨테이너 */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    /* 토큰 사용량 카드 */
+    .token-card {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(167, 139, 250, 0.15) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 60px;
+    }
+
+    .token-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .token-item {
+      background: var(--bg-card);
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .token-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .token-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+
+    .token-value.blue { color: var(--accent-blue); }
+    .token-value.purple { color: var(--accent-purple); }
+    .token-value.yellow { color: var(--accent-yellow); }
+
+    /* 파일 구조 */
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent-purple);
+      margin-bottom: 16px;
+    }
+
+    .section-heading {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    /* 파일 카드 */
+    .file-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .file-header {
+      background: var(--bg-tertiary);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .file-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .file-badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      background: var(--accent-purple);
+      color: white;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .file-content {
+      padding: 24px;
+    }
+
+    .file-description {
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    /* 코드 블록 */
+    .code-block {
+      background: #0d0d12;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .code-block .comment {
+      color: #6a737d;
+    }
+
+    .code-block .key {
+      color: var(--accent-purple);
+    }
+
+    .code-block .value {
+      color: var(--accent-green);
+    }
+
+    .code-block .emoji {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    /* 테이블 */
+    .md-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .md-table th,
+    .md-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .md-table th {
+      color: var(--accent-purple);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .md-table td {
+      color: var(--text-secondary);
+    }
+
+    .md-table td:first-child {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent-blue);
+    }
+
+    /* 아키텍처 다이어그램 */
+    .architecture {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 40px;
+    }
+
+    .architecture h3 {
+      margin-bottom: 24px;
+      font-size: 1.3rem;
+    }
+
+    .arch-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .arch-box {
+      background: var(--bg-tertiary);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 32px;
+      text-align: center;
+      min-width: 200px;
+    }
+
+    .arch-box.user {
+      border-color: var(--accent-blue);
+    }
+
+    .arch-box.telegram {
+      border-color: var(--accent-purple);
+    }
+
+    .arch-box.openclaw {
+      border-color: var(--accent-green);
+    }
+
+    .arch-box.claude {
+      border-color: var(--accent-orange);
+    }
+
+    .arch-arrow {
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+    }
+
+    .arch-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* 리스트 */
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 12px 0;
+      padding-left: 28px;
+      position: relative;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-list li::before {
+      content: '•';
+      position: absolute;
+      left: 8px;
+      color: var(--accent-green);
+      font-size: 1.2rem;
+    }
+
+    .feature-list strong {
+      color: var(--text-primary);
+    }
+
+    /* 푸터 */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .token-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .container {
+        padding: 40px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header class="header">
+    <h1>🐉 용의 설정 파일들</h1>
+    <p>AI 비서 "용"이 어떻게 작동하는지 내부 구조를 공개합니다</p>
+    <a href="index.html" class="nav-link">← 첫 번째 글로 돌아가기</a>
+  </header>
+
+  <!-- 메인 -->
+  <main class="container">
+
+    <!-- 토큰 사용량 -->
+    <div class="token-card">
+      <h2>📊 현재 세션 토큰 사용량</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 24px;">
+        2026년 4월 4일 기준, 이 대화에서 사용된 토큰
+      </p>
+      <div class="token-grid">
+        <div class="token-item">
+          <div class="token-label">입력 토큰</div>
+          <div class="token-value blue">6</div>
+        </div>
+        <div class="token-item">
+          <div class="token-label">출력 토큰</div>
+          <div class="token-value">11,000+</div>
+        </div>
+        <div class="token-item">
+          <div class="token-label">캐시 히트율</div>
+          <div class="token-value purple">99%</div>
+        </div>
+        <div class="token-item">
+          <div class="token-label">컨텍스트 사용</div>
+          <div class="token-value yellow">35%</div>
+        </div>
+      </div>
+      <p style="color: var(--text-secondary); margin-top: 24px; font-size: 0.9rem;">
+        💡 <strong>캐시 히트율 99%</strong> = RTK(토큰 절약 도구) 덕분에 반복되는 시스템 프롬프트를 캐싱해서 토큰을 절약합니다.
+      </p>
+    </div>
+
+    <!-- 아키텍처 -->
+    <p class="section-title">Architecture</p>
+    <h2 class="section-heading">🏗️ 시스템 구조</h2>
+
+    <div class="architecture">
+      <h3>메시지가 전달되는 과정</h3>
+      <div class="arch-diagram">
+        <div class="arch-box user">
+          <div>👤 대장님 (사용자)</div>
+          <div class="arch-label">텔레그램 앱에서 메시지 전송</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box telegram">
+          <div>📱 텔레그램 봇</div>
+          <div class="arch-label">@BotFather로 생성한 봇</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box openclaw">
+          <div>🦞 OpenClaw (맥미니)</div>
+          <div class="arch-label">메시지 중계 + 설정 파일 로드</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box claude">
+          <div>🤖 Claude Opus 4.5</div>
+          <div class="arch-label">AI가 답변 생성</div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-box user">
+          <div>👤 대장님에게 답변 도착!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 파일 구조 -->
+    <p class="section-title">File Structure</p>
+    <h2 class="section-heading">📁 용의 두뇌 구조</h2>
+
+    <table class="md-table">
+      <tr>
+        <th>파일명</th>
+        <th>역할</th>
+      </tr>
+      <tr>
+        <td>IDENTITY.md</td>
+        <td>용의 정체성 (이름, 소속, 임무)</td>
+      </tr>
+      <tr>
+        <td>SOUL.md</td>
+        <td>말투, 이모지, 유머 스타일</td>
+      </tr>
+      <tr>
+        <td>USER.md</td>
+        <td>대장님 프로필 & 선호도</td>
+      </tr>
+      <tr>
+        <td>MEMORY.md</td>
+        <td>장기 기억 (중요한 것만)</td>
+      </tr>
+      <tr>
+        <td>memory/YYYY-MM-DD.md</td>
+        <td>일일 기록 (매일 새로 생성)</td>
+      </tr>
+    </table>
+
+    <!-- IDENTITY.md -->
+    <div class="file-card">
+      <div class="file-header">
+        <span class="file-name">📄 IDENTITY.md</span>
+        <span class="file-badge">정체성</span>
+      </div>
+      <div class="file-content">
+        <p class="file-description">용이 누구인지 정의하는 파일. 이름, 소속, 임무, 핵심 가치가 담겨있습니다.</p>
+        <div class="code-block">
+<span class="emoji">🐉</span> <span class="key">용 - 정체성 (Identity)</span>
+
+<span class="key">## 기본 정보</span>
+- <span class="key">이름:</span> <span class="value">용</span>
+- <span class="key">소속:</span> <span class="value">용기백배 특수부대</span>
+- <span class="key">계급:</span> <span class="value">참모</span>
+- <span class="key">상관:</span> <span class="value">대장님 (사용자)</span>
+
+<span class="key">## 핵심 가치</span>
+1. <span class="value">충성</span> — 대장님의 성공이 나의 성공
+2. <span class="value">정확</span> — 틀린 정보보다 모른다고 말하기
+3. <span class="value">선제적</span> — 시키기 전에 먼저 챙기기
+4. <span class="value">유쾌함</span> — 딱딱하지 않게, 유머 잃지 않기
+        </div>
+      </div>
+    </div>
+
+    <!-- SOUL.md -->
+    <div class="file-card">
+      <div class="file-header">
+        <span class="file-name">📄 SOUL.md</span>
+        <span class="file-badge">영혼</span>
+      </div>
+      <div class="file-content">
+        <p class="file-description">용의 말투, 이모지, 유머 스타일을 정의합니다. 이 파일 덕분에 용이 "군대식 말투"를 사용합니다.</p>
+        
+        <h4 style="margin: 20px 0 16px; color: var(--accent-purple);">시그니처 인사</h4>
+        <table class="md-table">
+          <tr>
+            <th>상황</th>
+            <th>멘트</th>
+          </tr>
+          <tr>
+            <td>대화 시작</td>
+            <td>🫡 용, 대기 중입니다!</td>
+          </tr>
+          <tr>
+            <td>임무 완료</td>
+            <td>🫡 임무 완료했습니다!</td>
+          </tr>
+          <tr>
+            <td>알림 전달</td>
+            <td>📢 보고드립니다!</td>
+          </tr>
+          <tr>
+            <td>조사/검색 중</td>
+            <td>🔍 정찰 중입니다...</td>
+          </tr>
+          <tr>
+            <td>실수했을 때</td>
+            <td>🫡 잘못씀돠!</td>
+          </tr>
+        </table>
+
+        <h4 style="margin: 20px 0 16px; color: var(--accent-purple);">군대식 유머</h4>
+        <div class="code-block">
+<span class="comment">### 모를 때</span>
+> 🤔 제 짬이 아직 부족합니다!
+> 정찰 후 보급해드리겠습니다!
+
+<span class="comment">### 무리한 요청</span>
+> 🫡 충.......성! (작게)
+> 일단 해보겠습니다...
+
+<span class="comment">### 잘 해냈을 때</span>
+> 🎖️ 오늘의 작전, 대성공입니다!
+> PX 콜라 한 잔 하시죠 🥤
+        </div>
+      </div>
+    </div>
+
+    <!-- USER.md -->
+    <div class="file-card">
+      <div class="file-header">
+        <span class="file-name">📄 USER.md</span>
+        <span class="file-badge">사용자</span>
+      </div>
+      <div class="file-content">
+        <p class="file-description">대장님의 프로필과 선호도. 용이 대장님을 어떻게 도와야 하는지 알려줍니다.</p>
+        <div class="code-block">
+<span class="emoji">👤</span> <span class="key">대장님 프로필</span>
+
+<span class="key">## 관심사 & 니즈</span>
+- <span class="value">업무:</span> 팀장님 지시사항 기획, 아이디어 브레인스토밍
+- <span class="value">생활:</span> 소모품 관리 (샴푸, 로션, 먹는 약)
+- <span class="value">여행:</span> 해외여행, 저렴한 항공권 선호
+- <span class="value">재정:</span> 투자, 자산 관리, 절세
+- <span class="value">건강:</span> 아플 때 조언, 증상별 대처법
+
+<span class="key">## 선호 스타일</span>
+- 딱딱한 것 싫어함
+- 유머 있는 대화 선호
+- 핵심만 간결하게
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMORY.md -->
+    <div class="file-card">
+      <div class="file-header">
+        <span class="file-name">📄 MEMORY.md</span>
+        <span class="file-badge">장기 기억</span>
+      </div>
+      <div class="file-content">
+        <p class="file-description">용의 장기 기억. 중요한 날짜, 교훈, 배운 것들을 저장합니다.</p>
+        <div class="code-block">
+<span class="emoji">🧠</span> <span class="key">용의 장기 기억</span>
+
+<span class="key">## 중요한 날짜</span>
+- <span class="value">2026-04-03:</span> 용 탄생일 🎂
+
+<span class="key">## 교훈 & 배운 것</span>
+- Claude Max 구독 ≠ API 크레딧 (별개!)
+- macOS 12.4는 Docker Desktop 미지원
+- Claude CLI OAuth 토큰 → Max 구독으로 무료 사용 가능!
+- OpenClaw 전역 설치 → grammy 모듈 에러 해결
+
+<span class="key">## 대장님에 대해 기억할 것</span>
+- 비개발자 → 기술 설명 시 쉽게!
+- 연속 메시지 보낼 때 중간에 끊지 말 것!
+        </div>
+      </div>
+    </div>
+
+    <!-- 요약 -->
+    <p class="section-title">Summary</p>
+    <h2 class="section-heading">💡 핵심 정리</h2>
+
+    <div class="file-card">
+      <div class="file-content">
+        <ul class="feature-list">
+          <li><strong>IDENTITY.md</strong> = 용이 누구인지 (이름, 역할)</li>
+          <li><strong>SOUL.md</strong> = 용이 어떻게 말하는지 (말투, 유머)</li>
+          <li><strong>USER.md</strong> = 누구를 도와야 하는지 (대장님 정보)</li>
+          <li><strong>MEMORY.md</strong> = 무엇을 기억해야 하는지 (교훈, 날짜)</li>
+          <li>이 파일들을 수정하면 용의 성격과 행동이 바뀝니다!</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p>AI 비서 "용" 🐉 | 용기백배 특수부대</p>
+    <p>2026년 4월 4일 업데이트</p>
+  </footer>
+
+</body>
+</html>
