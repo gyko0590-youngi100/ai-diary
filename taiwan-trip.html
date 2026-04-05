@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대만 여행 실전 계획표 | 2026.04.09 - 04.14</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --bg-card: #16161f;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090a0;
+      --accent-green: #4ade80;
+      --accent-blue: #60a5fa;
+      --accent-purple: #a78bfa;
+      --accent-pink: #f472b6;
+      --accent-yellow: #fbbf24;
+      --border-color: #2a2a3a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+
+    .hero {
+      padding: 70px 20px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(96, 165, 250, 0.16) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(244, 114, 182, 0.14) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 18px;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    .section {
+      margin-top: 28px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .mini h4 {
+      margin-bottom: 8px;
+      color: var(--accent-blue);
+      font-size: 1rem;
+    }
+
+    .day-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+
+    .day-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .day-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .day-theme {
+      color: var(--accent-purple);
+      font-size: 0.95rem;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    .highlight {
+      color: var(--accent-yellow);
+      font-weight: 600;
+    }
+
+    .tip {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: rgba(96, 165, 250, 0.08);
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      border-radius: 12px;
+      color: var(--text-secondary);
+    }
+
+    .food-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .food-item {
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .food-item strong {
+      color: var(--accent-pink);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 16px 70px; }
+      .card, .day-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">2026.04.09 ~ 2026.04.14</div>
+      <h1>🇹🇼 대만 여행 실전 계획표</h1>
+      <p class="subtitle">친구와 바로 공유할 수 있는 실행용 일정 정리본</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section">
+      <h2 class="section-title">📋 여행 기본 정보</h2>
+      <div class="card grid">
+        <div class="mini">
+          <h4>✈️ 항공</h4>
+          <p>진에어 LJ0733 / LJ0734</p>
+          <p>4/9 22:40 출발 → 4/10 00:10 도착</p>
+          <p>4/14 01:25 출발 → 05:00 도착</p>
+        </div>
+        <div class="mini">
+          <h4>🏨 숙소</h4>
+          <p>4/10~12: 시저 메트로 타이베이</p>
+          <p>4/12~13: 풀문스파</p>
+        </div>
+        <div class="mini">
+          <h4>💳 결제</h4>
+          <p>카드 메인 + 현금 서브</p>
+          <p>현금 4,000~6,000 TWD 추천</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🚌 출국일 이동</h2>
+      <div class="card">
+        <ul>
+          <li><strong>19:30</strong> 서초구 청두곶8길 9에서 친구와 만나 출발</li>
+          <li><strong>공항버스 6703 계열</strong> 이용 예정</li>
+          <li>인천공항 T2까지 <span class="highlight">약 1시간 30분~1시간 50분</span></li>
+          <li><strong>20:30 전후</strong> 공항 도착 예상</li>
+          <li>체크인 / 수하물 / 출국심사 / 면세점 쇼핑 후 탑승</li>
+        </ul>
+        <div class="tip">※ 6703 정확한 탑승 정류장은 출발 전날 한 번 더 실시간 확인 추천</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🌙 대만 도착 후 이동</h2>
+      <div class="card">
+        <ul>
+          <li><strong>00:10</strong> 타오위안 공항 도착</li>
+          <li>입국심사 + 짐 찾고 나오면 보통 <strong>00:50~01:10</strong></li>
+          <li><strong>국광버스 1819</strong> 탑승 → 타이베이 메인역 하차</li>
+          <li>요금: <strong>약 140 TWD</strong></li>
+          <li>타이베이 메인역에서 <strong>택시 10분 내외</strong> → 시저 메트로 타이베이</li>
+          <li>호텔 도착 예상: <strong>02:20~02:40</strong></li>
+        </ul>
+        <div class="tip">※ 심야에는 1819가 제일 무난. 버스 놓치면 다음 차 대기 후 탑승</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🗓️ 날짜별 일정</h2>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">DAY 1 · 4/10 (금)</div>
+          <div class="day-theme">도착 + 시내 적응 + 먹고 싶은 것 몰아먹기</div>
+        </div>
+        <ul>
+          <li><strong>오전:</strong> 숙소에서 푹 쉬기</li>
+          <li><strong>점심:</strong> 딘타이펑</li>
+          <li><strong>오후:</strong> 중정기념당 가볍게</li>
+          <li><strong>저녁:</strong> 시먼딩 이동</li>
+          <li>먹을 것: <strong>아종면선</strong> / <strong>삼미식당</strong> / <strong>버블티</strong></li>
+        </ul>
+      </div>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">DAY 2 · 4/11 (토)</div>
+          <div class="day-theme">예스폭지 버스투어 올인</div>
+        </div>
+        <ul>
+          <li><strong>하루 종일:</strong> 예스폭지 버스투어</li>
+          <li><strong>점심:</strong> 투어 중간 식사</li>
+          <li><strong>저녁 후보:</strong> 우육면 or 망고빙수</li>
+        </ul>
+      </div>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">DAY 3 · 4/12 (일)</div>
+          <div class="day-theme">우라이 온천 + 풀문스파 힐링</div>
+        </div>
+        <ul>
+          <li><strong>오전:</strong> 시저 메트로 체크아웃 후 우라이 이동</li>
+          <li><strong>점심:</strong> 우라이 시장 음식점</li>
+          <li><strong>오후:</strong> 우라이 마을/온천 분위기 즐기기</li>
+          <li><strong>저녁:</strong> 풀문스파 체크인 + 호텔 저녁</li>
+        </ul>
+      </div>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">DAY 4 · 4/13 (월)</div>
+          <div class="day-theme">온천 마무리 + 타이베이 복귀</div>
+        </div>
+        <ul>
+          <li><strong>오전:</strong> 호텔 조식 후 체크아웃</li>
+          <li><strong>점심:</strong> 우육면</li>
+          <li><strong>오후:</strong> 타이베이 시내 가볍게 (101 / 중산 / 신의 쪽)</li>
+          <li><strong>후식:</strong> 망고빙수 + 버블티</li>
+          <li><strong>밤:</strong> 공항 이동 후 귀국 준비</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🍜 먹고 싶은 음식 체크</h2>
+      <div class="card">
+        <div class="food-list">
+          <div class="food-item"><strong>딘타이펑</strong><br>4/10 점심</div>
+          <div class="food-item"><strong>아종면선</strong><br>4/10 저녁</div>
+          <div class="food-item"><strong>삼미식당</strong><br>4/10 저녁</div>
+          <div class="food-item"><strong>우육면</strong><br>4/11 또는 4/13</div>
+          <div class="food-item"><strong>우라이 시장 음식</strong><br>4/12 점심</div>
+          <div class="food-item"><strong>망고빙수</strong><br>4/11 또는 4/13</div>
+          <div class="food-item"><strong>버블티</strong><br>4/10 또는 4/13</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">💡 핵심 정리</h2>
+      <div class="card">
+        <ul>
+          <li>첫날은 무리하지 말고 <strong>먹고 싶은 거 위주</strong></li>
+          <li>4/11은 <strong>예스폭지 투어</strong>만 집중</li>
+          <li>4/12는 <strong>우라이 올인</strong> + 숙소 힐링</li>
+          <li>4/13은 <strong>우육면 / 빙수 / 버블티</strong>로 마무리</li>
+          <li>결제는 <strong>카드 메인 + 현금 서브</strong></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>🇹🇼 Taiwan Trip Plan for Sharing</p>
+    <p style="margin-top: 8px;">Made by 용기백배 특수부대</p>
+  </footer>
+</body>
+</html>
