@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎖️ 용기백배 특수부대 대시보드</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f0f1a;
+      --bg-secondary: #1a1a2e;
+      --bg-tertiary: #232340;
+      --bg-card: #1e1e35;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090a0;
+      --accent-green: #4ade80;
+      --accent-red: #f87171;
+      --accent-yellow: #fbbf24;
+      --accent-blue: #60a5fa;
+      --accent-purple: #a78bfa;
+      --accent-pink: #f472b6;
+      --border-color: #2a2a4a;
+      --sidebar-width: 240px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      padding: 20px;
+    }
+
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 40px 28px;
+      text-align: center;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-icon { font-size: 4rem; margin-bottom: 16px; }
+    .login-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+    .login-subtitle { color: var(--text-secondary); margin-bottom: 24px; }
+
+    .login-input {
+      width: 100%;
+      padding: 16px;
+      background: var(--bg-tertiary);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 6px;
+      margin-bottom: 14px;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .login-error {
+      color: var(--accent-red);
+      margin-top: 12px;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .app { display: none; }
+    .app.active { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      inset: 0 auto 0 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .nav-menu { padding: 16px 0; flex: 1; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--bg-tertiary);
+      color: var(--accent-purple);
+      border-left-color: var(--accent-purple);
+    }
+
+    .sidebar-footer {
+      padding: 18px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .main {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 30px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-title {
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .mini-card {
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .mini-card h4 {
+      margin-bottom: 10px;
+      color: var(--accent-blue);
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .char-card {
+      background: var(--bg-tertiary);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .char-card.pending { opacity: 0.7; }
+
+    .char-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 14px;
+      border: 2px solid var(--accent-purple);
+    }
+
+    .char-icon { font-size: 3rem; margin-bottom: 14px; }
+    .char-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+    .char-role { color: var(--accent-blue); margin-bottom: 8px; }
+    .char-greeting { color: var(--text-secondary); font-size: 0.92rem; }
+
+    .rule-list li, .memory-list li {
+      margin-left: 18px;
+      margin-bottom: 8px;
+    }
+
+    .code-block {
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .app.active {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 20px 16px 40px;
+      }
+
+      .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 16px 16px;
+      }
+
+      .nav-item {
+        border-left: none;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 10px 14px;
+      }
+
+      .nav-item.active {
+        border-left: 1px solid var(--accent-purple);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <div class="login-icon">🎖️</div>
+      <div class="login-title">용기백배 특수부대</div>
+      <div class="login-subtitle">비밀번호를 입력하면 어느 기기에서든 들어올 수 있습니다</div>
+      <input id="passwordInput" class="login-input" type="password" inputmode="numeric" placeholder="비밀번호">
+      <button class="login-btn" onclick="checkPassword()">입장하기</button>
+      <div class="login-error" id="loginError">비밀번호가 다릅니다.</div>
+    </div>
+  </div>
+
+  <div class="app" id="mainApp">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">🐉 용기백배 대시보드</div>
+      </div>
+      <nav class="nav-menu">
+        <div class="nav-item active" data-page="home">🏠 홈</div>
+        <div class="nav-item" data-page="characters">🐉 캐릭터</div>
+        <div class="nav-item" data-page="tasks">📋 업무</div>
+        <div class="nav-item" data-page="rules">⚠️ 규칙</div>
+        <div class="nav-item" data-page="memory">🧠 기억</div>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="logout()">로그아웃</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="page active" id="page-home">
+        <h1 class="page-title">🏠 홈</h1>
+        <p class="page-subtitle">용기백배 특수부대 현황 요약</p>
+        <div class="card grid">
+          <div class="mini-card">
+            <h4>현재 두뇌</h4>
+            <p>GPT 5.4</p>
+          </div>
+          <div class="mini-card">
+            <h4>채널</h4>
+            <p>Telegram</p>
+          </div>
+          <div class="mini-card">
+            <h4>현재 상태</h4>
+            <p>용만 활성화</p>
+          </div>
+          <div class="mini-card">
+            <h4>대시보드 접근</h4>
+            <p>비밀번호 0590</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🎯 운영 메모</div>
+          <ul class="rule-list">
+            <li>대장님 맞춤형 비서로 계속 튜닝 중</li>
+            <li>기/백/배는 6월 이후 확장 예정</li>
+            <li>모바일에서도 비밀번호 입력 후 바로 접근 가능하도록 정리</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="page" id="page-characters">
+        <h1 class="page-title">🐉 캐릭터 소개</h1>
+        <p class="page-subtitle">용기백배 팀 구성</p>
+        <div class="char-grid">
+          <div class="char-card">
+            <img src="yong-character.jpg" alt="용" class="char-avatar">
+            <div class="char-name">🐉 용 (龍)</div>
+            <div class="char-role">총괄 사령관 · 소령</div>
+            <div class="char-greeting">충성! 용 관련하여 보고드립니다</div>
+          </div>
+          <div class="char-card pending">
+            <div class="char-icon">💪</div>
+            <div class="char-name">기 (氣)</div>
+            <div class="char-role">건강/취미 담당</div>
+            <div class="char-greeting">6월 확장 예정</div>
+          </div>
+          <div class="char-card pending">
+            <div class="char-icon">📋</div>
+            <div class="char-name">백 (百)</div>
+            <div class="char-role">업무/일정 담당</div>
+            <div class="char-greeting">6월 확장 예정</div>
+          </div>
+          <div class="char-card pending">
+            <div class="char-icon">💰</div>
+            <div class="char-name">배 (倍)</div>
+            <div class="char-role">재무/소모품 담당</div>
+            <div class="char-greeting">6월 확장 예정</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-tasks">
+        <h1 class="page-title">📋 업무 분장</h1>
+        <p class="page-subtitle">현재와 앞으로의 역할</p>
+        <div class="card">
+          <div class="card-title">현재 용의 역할</div>
+          <div class="code-block">• 일정/여행/생활 정리
+• 보고서 초안 보조
+• 맞춤형 말투 학습
+• 아침 브리핑
+• 아이디어를 실행형 계획으로 바꾸기</div>
+        </div>
+      </section>
+
+      <section class="page" id="page-rules">
+        <h1 class="page-title">⚠️ 규칙</h1>
+        <p class="page-subtitle">용이 지켜야 할 핵심 원칙</p>
+        <div class="card">
+          <ul class="rule-list">
+            <li>승인 없이 파일 수정/삭제/외부 발송 금지</li>
+            <li>연속 메시지는 끝까지 보고 답변</li>
+            <li>질문과 실행 요청 구분하기</li>
+            <li>비개발자 기준으로 쉽게 설명하기</li>
+            <li>핵심 먼저, 짧게 보고하기</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="page" id="page-memory">
+        <h1 class="page-title">🧠 장기 기억</h1>
+        <p class="page-subtitle">지금까지 기억하는 핵심</p>
+        <div class="card">
+          <ul class="memory-list">
+            <li>용 탄생일: 2026-04-03</li>
+            <li>대장님은 핵심 먼저, 짧고 쉬운 설명 선호</li>
+            <li>미디어 전송은 read가 아니라 message send로 확인해야 함</li>
+            <li>반복 작업은 템플릿화/문서화가 중요함</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const CORRECT_PASSWORD = '0590';
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      if (input === CORRECT_PASSWORD) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('mainApp').classList.add('active');
+        sessionStorage.setItem('yong-auth', 'true');
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('yong-auth');
+      location.reload();
+    }
+
+    document.getElementById('passwordInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    if (sessionStorage.getItem('yong-auth') === 'true') {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainApp').classList.add('active');
+    }
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        item.classList.add('active');
+        document.getElementById('page-' + item.dataset.page).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
