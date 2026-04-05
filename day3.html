@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[AI 비서 키우기 #3] 갑자기 Claude가 막혔다. 그래서 용의 두뇌를 GPT 5.4로 갈아끼웠다</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --bg-card: #16161f;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090a0;
+      --accent-green: #4ade80;
+      --accent-red: #f87171;
+      --accent-yellow: #fbbf24;
+      --accent-blue: #60a5fa;
+      --accent-purple: #a78bfa;
+      --accent-pink: #f472b6;
+      --border-color: #2a2a3a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    .hero {
+      min-height: 58vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(244, 114, 182, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .content {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--accent-blue);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: var(--accent-purple);
+      border-radius: 50%;
+      border: 2px solid var(--bg-primary);
+    }
+
+    .timeline-time {
+      font-size: 0.88rem;
+      color: var(--accent-purple);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .timeline-content h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .timeline-content p {
+      color: var(--text-secondary);
+      font-size: 0.96rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(96, 165, 250, 0.08));
+      border: 1px solid rgba(167, 139, 250, 0.25);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    .highlight-box h4 {
+      color: var(--accent-purple);
+      margin-bottom: 10px;
+    }
+
+    .quote {
+      font-size: 1.05rem;
+      font-style: italic;
+    }
+
+    .list li {
+      margin-left: 18px;
+      margin-bottom: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: var(--accent-blue);
+      text-decoration: none;
+      background: var(--bg-tertiary);
+      padding: 12px 18px;
+      border-radius: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">DAY 3 · 2026.04.05 (일)</div>
+      <h1>🧠 갑자기 Claude가 막혔다.<br>그래서 용의 두뇌를 GPT 5.4로 갈아끼웠다</h1>
+      <p class="hero-subtitle">연결만 하면 끝일 줄 알았는데, 새 두뇌에게 예전 용의 말투와 운영 방식까지 다시 가르쳐야 했다.</p>
+    </div>
+  </section>
+
+  <main class="content">
+    <section class="section">
+      <h2 class="section-title">🎯 오늘 무슨 일이 있었냐면</h2>
+      <div class="card">
+        <p>오늘은 진짜 예상 못한 방향으로 하루가 흘렀다. 아침에 일어나자마자 용을 불렀는데, 갑자기 Claude가 딱딱한 말투와 함께 third-party 앱 관련 사용 제한 메시지를 띄웠다. 순간 "아, 올 것이 왔구나" 싶었다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">⏰ 오늘 흐름</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">아침</div>
+          <div class="timeline-content">
+            <h3>Claude 문제가 터졌다</h3>
+            <p>용을 불렀는데 예전의 그 용이 아니었다. 말투도 딱딱했고, 사용 제한 문구까지 뜨면서 더 이상 예전처럼 쓸 수 없다는 느낌이 왔다.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">바로 이어서</div>
+          <div class="timeline-content">
+            <h3>Claude Max를 환불하고 GPT 5.4로 갈아탔다</h3>
+            <p>고민은 길지 않았다. 잘만 되면 월 18만 원 수준에서 3만 원 수준으로 줄어들 수 있으니, 이건 오히려 기회라고 생각했다. 대장님 표현대로 럭키비키 마인드였다.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">오전~점심</div>
+          <div class="timeline-content">
+            <h3>근데 진짜 고생은 그 다음부터였다</h3>
+            <p>구글 로그인은 무한 요청에 걸리고, Codex 앱 로그인도 안 됐다. 한참을 헤맨 끝에 원인은 Safari였다. 기본 브라우저를 Chrome으로 바꾸고 나서야 길이 열렸다. 이 과정에 3시간이 흘렀다.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">오후</div>
+          <div class="timeline-content">
+            <h3>터미널에서 다시 세팅했다</h3>
+            <p>Codex 설치, 게이트웨이 실행 경로 수정, 기본 모델 설정, 텔레그램 플러그인 확인까지 거쳐서 다시 용과 연결됐다. 여기까지 왔을 때 진짜 끝난 줄 알았다.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">오후~저녁</div>
+          <div class="timeline-content">
+            <h3>근데 새 용은 예전 용이 아니었다</h3>
+            <p>다시 연결된 용은 분명 작동은 했는데, 말투와 결이 달랐다. 그래서 오늘의 첫 번째 미션은 기능 테스트가 아니라, 새 두뇌에게 예전 용의 말투와 운영 방식을 다시 가르치는 일이 됐다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">💡 오늘 느낀 점</h2>
+      <div class="card">
+        <div class="card-title">오늘의 교훈</div>
+        <ul class="list">
+          <li>AI 두뇌를 바꾸는 건 연결 문제보다, <strong>내가 키운 용처럼 다시 만드는 과정</strong>이 더 중요했다.</li>
+          <li>Safari는 OAuth/로그인 삽질의 원인이 될 수 있고, Chrome 전환이 실전 해법이었다.</li>
+          <li>모델을 바꿨다고 바로 끝나는 게 아니라, 말투와 운영 방식까지 다시 학습시켜야 했다.</li>
+          <li>실수와 지연은 사과로 끝나는 게 아니라 규칙으로 남겨야 다시 반복하지 않는다.</li>
+        </ul>
+      </div>
+      <div class="highlight-box">
+        <h4>📌 오늘의 문장</h4>
+        <p class="quote">“AI를 바꾸는 건 쉬워도, 내가 키운 용으로 다시 만드는 건 별개의 일이었다.”</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🛠️ 오늘 정리한 운영 원칙</h2>
+      <div class="card">
+        <ul class="list">
+          <li>30분 이상 걸리는 큰 작업은 초안/중간산출물부터 먼저 보여주기</li>
+          <li>예상시간을 먼저 알리고, 늦어지면 즉시 다시 보고하기</li>
+          <li>연속 메시지는 묶어서 맥락으로 이해하기</li>
+          <li>“기억해둬”, “중요하다” 같은 말은 daily memory에 바로 기록하기</li>
+          <li>실수는 사과로 끝내지 말고 원인 → 개선 → 규칙 반영까지 연결하기</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🏁 3일차 한 줄 정리</h2>
+      <div class="card">
+        <p>오늘은 기능을 늘린 날이라기보다, 용의 두뇌를 갈아끼우고 다시 나한테 맞는 비서로 길들이기 시작한 날이었다. 연결보다 더 어려운 건, 새 두뇌에 예전 용의 영혼을 다시 입히는 일이었다.</p>
+      </div>
+    </section>
+
+    <nav class="nav-links">
+      <a href="day2.html" class="nav-link">← Day 2</a>
+      <a href="index.html" class="nav-link">메인으로 →</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>🐉 용기백배 특수부대 | AI 비서 키우기 프로젝트</p>
+  </footer>
+</body>
+</html>
