@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대만 여행 일정표 초안</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0b0f19;
+      --card:#121826;
+      --line:#27324a;
+      --text:#eef2ff;
+      --sub:#9aa4bd;
+      --blue:#60a5fa;
+      --pink:#f472b6;
+      --green:#4ade80;
+      --yellow:#fbbf24;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+    .wrap{max-width:900px;margin:0 auto;padding:40px 20px 80px}
+    .hero{padding:30px 0 20px}
+    .badge{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:999px;color:var(--sub);font-size:.9rem;margin-bottom:16px}
+    h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;margin-bottom:14px;background:linear-gradient(135deg,var(--pink),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .sub{color:var(--sub)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:18px}
+    .section-title{font-size:1.5rem;font-weight:800;margin:34px 0 14px}
+    .route{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+    .route-item{background:#0f1522;border:1px solid var(--line);border-radius:14px;padding:16px}
+    .route-item strong{display:block;color:var(--blue);margin-bottom:6px}
+    .day-title{font-size:1.3rem;font-weight:800;margin-bottom:10px}
+    .timeline{display:grid;gap:12px}
+    .time-card{background:#0f1522;border:1px solid var(--line);border-radius:14px;padding:16px}
+    .time{color:var(--yellow);font-weight:700;margin-bottom:6px}
+    .move{color:var(--green);font-size:.95rem;margin-top:6px}
+    .tip{color:var(--sub);font-size:.95rem;margin-top:6px}
+    ul{padding-left:18px}
+    li{margin-bottom:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">초안 v1 · 친구 공유용 여행 플래너</div>
+      <h1>🇹🇼 대만 여행 일정표</h1>
+      <p class="sub">먼저 전체 흐름 + 1일차 실행표부터 빠르게 잡은 초안입니다.</p>
+    </section>
+
+    <section>
+      <div class="section-title">전체 여정 한눈에 보기</div>
+      <div class="card route">
+        <div class="route-item"><strong>4/9 (목)</strong>서초 출발 → 인천공항 T2 → 타오위안</div>
+        <div class="route-item"><strong>4/10 (금)</strong>타이베이 도착 · 딘타이펑 · 시먼딩</div>
+        <div class="route-item"><strong>4/11 (토)</strong>예스폭지 버스투어</div>
+        <div class="route-item"><strong>4/12 (일)</strong>우라이 이동 · 풀문스파</div>
+        <div class="route-item"><strong>4/13 (월)</strong>타이베이 복귀 · 우육면 · 빙수</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">DAY 1 · 4/9~4/10 실행표</div>
+      <div class="card">
+        <div class="day-title">출국 + 타이베이 첫날 적응</div>
+        <div class="timeline">
+          <div class="time-card">
+            <div class="time">19:30</div>
+            <div>서울 서초구 청두곶8길 9에서 친구와 만나 출발</div>
+            <div class="move">이동: 공항버스 6703 계열 / 인천공항 T2까지 약 1시간 30분~1시간 50분</div>
+            <div class="tip">팁: 20:30 전후 공항 도착이면 체크인/면세점까지 여유 있음</div>
+          </div>
+
+          <div class="time-card">
+            <div class="time">22:40</div>
+            <div>진에어 LJ0733 탑승 / 인천공항 T2 출발</div>
+            <div class="tip">수화물 15kg, 일반석</div>
+          </div>
+
+          <div class="time-card">
+            <div class="time">00:10</div>
+            <div>타오위안 공항 도착</div>
+            <div class="move">입국심사 + 수하물 후 보통 00:50~01:10 공항 밖</div>
+          </div>
+
+          <div class="time-card">
+            <div class="time">01:10~01:30</div>
+            <div>국광버스 1819 탑승 → 타이베이 메인역 이동</div>
+            <div class="move">요금: 약 140 TWD / 심야에도 가장 무난한 루트</div>
+            <div class="tip">내리면 타이베이역, 여기서 택시로 호텔 이동</div>
+          </div>
+
+          <div class="time-card">
+            <div class="time">02:20~02:40</div>
+            <div>시저 메트로 타이베이 도착 및 휴식</div>
+            <div class="move">타이베이역 → 호텔 택시 약 10분</div>
+          </div>
+
+          <div class="time-card">
+            <div class="time">점심 ~ 저녁</div>
+            <div>
+              <ul>
+                <li><strong>점심:</strong> 딘타이펑 (융캉제/동먼역 쪽)</li>
+                <li><strong>오후:</strong> 중정기념당 가볍게</li>
+                <li><strong>저녁:</strong> 시먼딩 이동</li>
+                <li><strong>먹을 것:</strong> 아종면선, 삼미식당, 버블티</li>
+              </ul>
+            </div>
+            <div class="tip">첫날은 무조건 빡세게 말고, 시내 적응 + 먹고 싶은 것 해결 중심</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
