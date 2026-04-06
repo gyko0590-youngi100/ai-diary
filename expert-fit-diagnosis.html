@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>현장전문가 적합도 진단</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0b1020;
+      --card:#131a2e;
+      --line:#283553;
+      --text:#eef3ff;
+      --sub:#98a3bf;
+      --blue:#60a5fa;
+      --green:#4ade80;
+      --yellow:#fbbf24;
+      --pink:#f472b6;
+      --red:#f87171;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(180deg,#0b1020 0%,#11182b 100%);color:var(--text);line-height:1.6}
+    .wrap{max-width:980px;margin:0 auto;padding:32px 20px 80px}
+    .hero{margin-bottom:24px}
+    .badge{display:inline-block;padding:7px 14px;border:1px solid var(--line);border-radius:999px;color:var(--sub);font-size:.9rem;margin-bottom:14px}
+    h1{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:10px;background:linear-gradient(135deg,var(--pink),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .desc{color:var(--sub);font-size:1rem}
+    .card{background:rgba(19,26,46,.95);border:1px solid var(--line);border-radius:22px;padding:24px;margin-top:18px;box-shadow:0 20px 40px rgba(0,0,0,.18)}
+    .section-title{font-size:1.25rem;font-weight:800;margin-bottom:14px}
+    .mini{font-size:.94rem;color:var(--sub)}
+    .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+    .scale div{background:#0e1528;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:.9rem;color:var(--sub)}
+    .question{padding:18px 0;border-top:1px solid rgba(152,163,191,.16)}
+    .question:first-child{border-top:none;padding-top:0}
+    .q-title{font-size:1rem;font-weight:700;margin-bottom:12px}
+    .q-meta{display:inline-block;font-size:.8rem;color:var(--blue);background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+    .options{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+    .options label{display:block}
+    .options input{display:none}
+    .pill{display:flex;align-items:center;justify-content:center;background:#0e1528;border:1px solid var(--line);border-radius:14px;padding:12px 8px;font-weight:700;color:var(--sub);cursor:pointer;transition:.2s}
+    .options input:checked + .pill{background:rgba(96,165,250,.14);border-color:var(--blue);color:#fff;transform:translateY(-1px)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+    button{border:none;border-radius:14px;padding:14px 20px;font-size:1rem;font-weight:800;cursor:pointer}
+    .primary{background:linear-gradient(135deg,var(--blue),#3b82f6);color:#fff}
+    .ghost{background:#0e1528;color:var(--sub);border:1px solid var(--line)}
+    .result{display:none}
+    .score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:18px}
+    .score-card{background:#0e1528;border:1px solid var(--line);border-radius:16px;padding:16px}
+    .score-card strong{display:block;font-size:1.4rem;color:#fff;margin-top:6px}
+    .bar{height:10px;background:#0f172a;border-radius:999px;overflow:hidden;margin-top:10px;border:1px solid var(--line)}
+    .fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));width:0%}
+    .summary{margin-top:18px;padding:18px;border-radius:16px;background:#0e1528;border:1px solid var(--line)}
+    .summary h3{font-size:1.2rem;margin-bottom:10px}
+    .summary p{color:var(--text)}
+    .hint{margin-top:10px;color:var(--sub);font-size:.95rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">초안 v1 · 자가진단형</div>
+      <h1>현장전문가 적합도 진단</h1>
+      <p class="desc">각 문항에 대해 1~5점으로 선택하면 총점과 영역별 결과를 바로 확인할 수 있습니다.</p>
+    </section>
+
+    <section class="card">
+      <div class="section-title">응답 기준</div>
+      <p class="mini">1점 = 전혀 그렇지 않다 / 2점 = 그렇지 않은 편이다 / 3점 = 보통이다 / 4점 = 그런 편이다 / 5점 = 매우 그렇다</p>
+      <div class="scale">
+        <div>1점<br>전혀 아님</div>
+        <div>2점<br>아닌 편</div>
+        <div>3점<br>보통</div>
+        <div>4점<br>그런 편</div>
+        <div>5점<br>매우 그렇다</div>
+      </div>
+    </section>
+
+    <form id="quiz" class="card"></form>
+
+    <section id="result" class="card result">
+      <div class="section-title">진단 결과</div>
+      <div class="score-grid">
+        <div class="score-card"><span class="mini">총점</span><strong id="totalScore">0점</strong><div class="mini">75점 만점</div></div>
+        <div class="score-card"><span class="mini">문제 인식력</span><strong id="s1">0점</strong><div class="bar"><div id="b1" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">원인 탐구성</span><strong id="s2">0점</strong><div class="bar"><div id="b2" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">실행 의지</span><strong id="s3">0점</strong><div class="bar"><div id="b3" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">공유·전파 성향</span><strong id="s4">0점</strong><div class="bar"><div id="b4" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">역할 책임감</span><strong id="s5">0점</strong><div class="bar"><div id="b5" class="fill"></div></div></div>
+      </div>
+      <div class="summary">
+        <h3 id="grade">-</h3>
+        <p id="comment">-</p>
+        <div class="hint" id="advice">-</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const questions = [
+      ['문제 인식력','현장에서 반복적으로 발생하는 문제를 그냥 넘기지 않고 원인을 궁금해하는 편이다.'],
+      ['문제 인식력','작업 중 비효율이나 불편 요소를 발견하면 개선 필요성을 자주 느낀다.'],
+      ['문제 인식력','문제가 발생했을 때 “왜 이런 일이 생겼는지”를 먼저 생각하는 편이다.'],
+      ['원인 탐구성','문제를 해결할 때 현상만 보기보다 근본 원인을 찾으려 한다.'],
+      ['원인 탐구성','기존 방식이 익숙하더라도 더 나은 방법이 있으면 검토해보는 편이다.'],
+      ['원인 탐구성','데이터를 보거나 사례를 비교해가며 원인을 파악하는 데 흥미가 있다.'],
+      ['실행 의지','개선 아이디어가 있으면 실제로 적용해보려고 하는 편이다.'],
+      ['실행 의지','문제 해결을 위해 추가적인 학습이나 자료 확인을 자발적으로 하는 편이다.'],
+      ['실행 의지','당장 내 일이 아니어도 현장에 도움이 된다면 개선 활동에 참여할 의향이 있다.'],
+      ['공유·전파 성향','내가 알고 있는 노하우를 동료와 공유하는 데 거부감이 없다.'],
+      ['공유·전파 성향','후배나 동료가 물어보면 내가 아는 범위에서 설명해주려는 편이다.'],
+      ['공유·전파 성향','좋은 방법이 있으면 혼자만 쓰기보다 팀에 확산되면 좋겠다고 생각한다.'],
+      ['역할 책임감','현장전문가는 단순한 칭호가 아니라 현장의 문제 해결과 성장을 이끄는 역할이라고 생각한다.'],
+      ['역할 책임감','현장전문가로 선발된다면 일정한 책임과 역할 수행이 따라야 한다고 생각한다.'],
+      ['역할 책임감','나는 현장전문가가 될 경우 스스로 목표를 세우고 지속적으로 역할을 수행할 의지가 있다.']
+    ];
+
+    const quiz = document.getElementById('quiz');
+    const groups = ['문제 인식력','원인 탐구성','실행 의지','공유·전파 성향','역할 책임감'];
+
+    quiz.innerHTML = `
+      <div class="section-title">진단 문항 (총 ${questions.length}문항)</div>
+      ${questions.map((q, idx) => `
+        <div class="question">
+          <div class="q-meta">${q[0]}</div>
+          <div class="q-title">${idx + 1}. ${q[1]}</div>
+          <div class="options">
+            ${[1,2,3,4,5].map(n => `
+              <label>
+                <input type="radio" name="q${idx}" value="${n}">
+                <span class="pill">${n}점</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')}
+      <div class="actions">
+        <button type="button" class="primary" id="submitBtn">결과 보기</button>
+        <button type="reset" class="ghost">다시 선택하기</button>
+      </div>
+    `;
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      let total = 0;
+      const scoreMap = {
+        '문제 인식력':0,
+        '원인 탐구성':0,
+        '실행 의지':0,
+        '공유·전파 성향':0,
+        '역할 책임감':0
+      };
+
+      for (let i = 0; i < questions.length; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (!selected) {
+          alert(`${i + 1}번 문항이 아직 선택되지 않았습니다.`);
+          return;
+        }
+        const val = Number(selected.value);
+        total += val;
+        scoreMap[questions[i][0]] += val;
+      }
+
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('totalScore').textContent = `${total}점`;
+
+      const ids = ['s1','s2','s3','s4','s5'];
+      const bars = ['b1','b2','b3','b4','b5'];
+      groups.forEach((g, i) => {
+        const score = scoreMap[g];
+        document.getElementById(ids[i]).textContent = `${score}점`;
+        document.getElementById(bars[i]).style.width = `${(score/15)*100}%`;
+      });
+
+      let grade = '';
+      let comment = '';
+      if (total >= 60) {
+        grade = '적합도 높음';
+        comment = '현장전문가 역할 수행에 필요한 기본 성향과 실행 의지가 전반적으로 높은 수준입니다. 실제 전문성 검증과 연계하면 1차 후보군으로 검토할 수 있습니다.';
+      } else if (total >= 50) {
+        grade = '잠재력 있음';
+        comment = '현장전문가로 성장할 가능성은 있으나, 일부 영역은 추가 보완이 필요합니다. 지원서·면담·현업 평가를 함께 보는 것이 적절합니다.';
+      } else {
+        grade = '추가 준비 필요';
+        comment = '현재는 현장전문가 역할 수행을 위한 준비도가 다소 부족할 수 있습니다. 역할 이해, 실행 경험, 공유 의지 측면의 보완이 필요합니다.';
+      }
+
+      const sorted = Object.entries(scoreMap).sort((a,b)=>b[1]-a[1]);
+      const strong = sorted[0][0];
+      const weak = sorted[sorted.length-1][0];
+      const advice = `강점 영역: ${strong} / 보완 필요 영역: ${weak}. 지원서 작성 시 강점은 구체 사례로 연결하고, 보완 영역은 향후 실천 계획으로 제시하면 좋습니다.`;
+
+      document.getElementById('grade').textContent = grade;
+      document.getElementById('comment').textContent = comment;
+      document.getElementById('advice').textContent = advice;
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
