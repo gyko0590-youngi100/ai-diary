@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>현장전문가 후보자 진단 (숨은 평가형)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0b1020;--card:#131a2e;--line:#283553;--text:#eef3ff;--sub:#98a3bf;--blue:#60a5fa;--green:#4ade80;--yellow:#fbbf24;--pink:#f472b6;--red:#f87171}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(180deg,#0b1020 0%,#11182b 100%);color:var(--text);line-height:1.6}
+    .wrap{max-width:1050px;margin:0 auto;padding:32px 20px 80px}
+    .hero{margin-bottom:24px}.badge{display:inline-block;padding:7px 14px;border:1px solid var(--line);border-radius:999px;color:var(--sub);font-size:.9rem;margin-bottom:14px}
+    h1{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:10px;background:linear-gradient(135deg,var(--pink),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .desc{color:var(--sub)}
+    .card{background:rgba(19,26,46,.95);border:1px solid var(--line);border-radius:22px;padding:24px;margin-top:18px;box-shadow:0 20px 40px rgba(0,0,0,.18)}
+    .section-title{font-size:1.25rem;font-weight:800;margin-bottom:14px}.mini{font-size:.94rem;color:var(--sub)}
+    .question{padding:18px 0;border-top:1px solid rgba(152,163,191,.16)}.question:first-child{border-top:none;padding-top:0}
+    .q-title{font-size:1rem;font-weight:700;margin-bottom:12px}.q-num{display:inline-block;color:var(--yellow);margin-right:8px}
+    .options{display:grid;gap:10px}.options label{display:block}.options input{display:none}
+    .opt{display:block;background:#0e1528;border:1px solid var(--line);border-radius:14px;padding:14px 16px;color:var(--sub);cursor:pointer;transition:.2s}
+    .options input:checked + .opt{background:rgba(96,165,250,.14);border-color:var(--blue);color:#fff;transform:translateY(-1px)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}button{border:none;border-radius:14px;padding:14px 20px;font-size:1rem;font-weight:800;cursor:pointer}
+    .primary{background:linear-gradient(135deg,var(--blue),#3b82f6);color:#fff}.ghost{background:#0e1528;color:var(--sub);border:1px solid var(--line)}
+    .result{display:none}.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:18px}
+    .score-card{background:#0e1528;border:1px solid var(--line);border-radius:16px;padding:16px}.score-card strong{display:block;font-size:1.3rem;color:#fff;margin-top:6px}
+    .bar{height:10px;background:#0f172a;border-radius:999px;overflow:hidden;margin-top:10px;border:1px solid var(--line)}.fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));width:0%}
+    .summary{margin-top:18px;padding:18px;border-radius:16px;background:#0e1528;border:1px solid var(--line)}.summary h3{font-size:1.2rem;margin-bottom:10px}
+    .tag{display:inline-block;padding:6px 10px;border-radius:999px;font-size:.85rem;font-weight:700;margin-right:8px;margin-bottom:8px}.tag.good{background:rgba(74,222,128,.14);color:#86efac;border:1px solid rgba(74,222,128,.25)}.tag.warn{background:rgba(251,191,36,.14);color:#fde68a;border:1px solid rgba(251,191,36,.25)}.tag.bad{background:rgba(248,113,113,.14);color:#fca5a5;border:1px solid rgba(248,113,113,.25)}
+    .panel{margin-top:16px;padding:16px;border-radius:14px;background:#10182d;border:1px solid var(--line)}
+    .panel h4{margin-bottom:8px}.panel p,.panel li{color:var(--sub)} ul{padding-left:18px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">초안 v2 · 숨은 평가형</div>
+      <h1>현장전문가 후보자 진단</h1>
+      <p class="desc">지원자는 일반 질문에 답하고, 평가자는 결과 화면에서 영역별 적합도와 해석을 확인하는 구조입니다.</p>
+    </section>
+
+    <section class="card">
+      <div class="section-title">지원자 안내</div>
+      <p class="mini">아래 질문을 읽고 본인과 가장 가까운 선택지를 고르시면 됩니다. 정답은 없으며, 평소 생각과 행동에 가장 가까운 답변을 선택해 주세요.</p>
+    </section>
+
+    <form id="quiz" class="card"></form>
+
+    <section id="result" class="card result">
+      <div class="section-title">평가자 결과지</div>
+      <div class="score-grid">
+        <div class="score-card"><span class="mini">문제 인식력</span><strong id="s1">0</strong><div class="bar"><div id="b1" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">원인 탐구성</span><strong id="s2">0</strong><div class="bar"><div id="b2" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">실행 주도성</span><strong id="s3">0</strong><div class="bar"><div id="b3" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">공유·확산 성향</span><strong id="s4">0</strong><div class="bar"><div id="b4" class="fill"></div></div></div>
+        <div class="score-card"><span class="mini">역할 책임감</span><strong id="s5">0</strong><div class="bar"><div id="b5" class="fill"></div></div></div>
+      </div>
+
+      <div class="summary">
+        <h3 id="typeTitle">-</h3>
+        <div id="tags"></div>
+        <p id="typeComment">-</p>
+      </div>
+
+      <div class="panel">
+        <h4>평가 해석</h4>
+        <p id="interpretation">-</p>
+      </div>
+
+      <div class="panel">
+        <h4>면담 시 확인 포인트</h4>
+        <ul id="interviewPoints"></ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const axes = ['문제 인식력','원인 탐구성','실행 주도성','공유·확산 성향','역할 책임감'];
+
+    const questions = [
+      {
+        q:'현장에서 같은 문제가 반복되는데, 모두가 “원래 그렇다”고 말한다면 당신은 어떻게 하겠습니까?',
+        options:[
+          {text:'일단 기존 방식대로 처리한다', score:{problem:0,cause:0,action:0,share:0,role:0}},
+          {text:'문제가 반복되는 이유를 정리해본다', score:{problem:2,cause:2,action:1,share:0,role:1}},
+          {text:'팀장 지시가 있을 때까지 기다린다', score:{problem:0,cause:0,action:-1,share:0,role:0}},
+          {text:'내 담당 업무만 우선 마무리한다', score:{problem:-1,cause:0,action:0,share:-1,role:-1}}
+        ]
+      },
+      {
+        q:'새로운 작업 방법이 더 효율적일 것 같지만, 아직 아무도 시도하지 않았다면?',
+        options:[
+          {text:'검증되지 않았으니 하지 않는다', score:{problem:0,cause:0,action:-1,share:0,role:0}},
+          {text:'먼저 소규모로 시험해볼 방법을 생각한다', score:{problem:1,cause:1,action:2,share:0,role:1}},
+          {text:'누가 먼저 해보길 기다린다', score:{problem:0,cause:0,action:-1,share:0,role:0}},
+          {text:'기존 방식이 편하니 유지한다', score:{problem:-1,cause:-1,action:-1,share:0,role:0}}
+        ]
+      },
+      {
+        q:'동료가 자주 같은 실수를 반복할 때 당신의 반응은?',
+        options:[
+          {text:'내 일이 아니니 크게 관여하지 않는다', score:{problem:0,cause:0,action:0,share:-2,role:-1}},
+          {text:'한 번쯤 방법을 알려주거나 기준을 설명해준다', score:{problem:1,cause:0,action:1,share:2,role:1}},
+          {text:'팀장이 말하겠지 하고 넘긴다', score:{problem:0,cause:0,action:-1,share:-1,role:0}},
+          {text:'그냥 알아서 배우길 기다린다', score:{problem:0,cause:0,action:0,share:-1,role:-1}}
+        ]
+      },
+      {
+        q:'문제가 발생했을 때 더 중요하다고 생각하는 것은?',
+        options:[
+          {text:'빨리 넘기는 것', score:{problem:0,cause:-1,action:0,share:0,role:0}},
+          {text:'원인을 파악해 재발을 줄이는 것', score:{problem:1,cause:2,action:1,share:0,role:1}},
+          {text:'보고부터 하는 것', score:{problem:0,cause:0,action:0,share:0,role:0}},
+          {text:'내 책임이 아닌지 확인하는 것', score:{problem:0,cause:0,action:0,share:0,role:-1}}
+        ]
+      },
+      {
+        q:'현장전문가라는 역할에 가장 가까운 설명은 무엇이라고 생각합니까?',
+        options:[
+          {text:'현장에서 오래 일한 사람', score:{problem:0,cause:0,action:0,share:0,role:0}},
+          {text:'기술이 좋은 사람', score:{problem:0,cause:0,action:0,share:0,role:1}},
+          {text:'문제를 해결하고 지식을 확산하는 사람', score:{problem:1,cause:1,action:1,share:2,role:2}},
+          {text:'선발되어 인정받은 사람', score:{problem:0,cause:0,action:0,share:0,role:-1}}
+        ]
+      },
+      {
+        q:'어떤 현장 이슈를 발견했는데 당장 내 업무는 아닙니다. 이럴 때 당신은?',
+        options:[
+          {text:'담당자가 알아서 하겠지 하고 지나간다', score:{problem:0,cause:0,action:-1,share:0,role:-1}},
+          {text:'현장에 도움이 된다면 내가 도울 수 있는 부분을 본다', score:{problem:1,cause:0,action:2,share:1,role:2}},
+          {text:'나중에 누가 물어보면 말한다', score:{problem:0,cause:0,action:0,share:0,role:0}},
+          {text:'일단 모른 척한다', score:{problem:-1,cause:0,action:-1,share:-1,role:-1}}
+        ]
+      },
+      {
+        q:'개선 활동을 할 때 본인에게 가장 익숙한 방식은?',
+        options:[
+          {text:'누가 시키면 한다', score:{problem:0,cause:0,action:-1,share:0,role:0}},
+          {text:'필요성을 느끼면 스스로 자료를 찾아본다', score:{problem:1,cause:1,action:2,share:0,role:1}},
+          {text:'다른 사람이 정리한 것을 따라간다', score:{problem:0,cause:0,action:0,share:0,role:0}},
+          {text:'굳이 추가로 하지는 않는다', score:{problem:0,cause:0,action:-1,share:0,role:-1}}
+        ]
+      },
+      {
+        q:'문제 해결 경험을 떠올릴 때, 당신이 가장 먼저 보는 것은?',
+        options:[
+          {text:'누가 실수했는가', score:{problem:0,cause:-1,action:0,share:-1,role:0}},
+          {text:'왜 이런 상황이 반복되는가', score:{problem:1,cause:2,action:0,share:0,role:1}},
+          {text:'빨리 끝낼 수 있는가', score:{problem:0,cause:-1,action:0,share:0,role:0}},
+          {text:'보고를 어떻게 할까', score:{problem:0,cause:0,action:0,share:0,role:0}}
+        ]
+      },
+      {
+        q:'현장전문가로 선발된다면 가장 중요하다고 생각하는 것은?',
+        options:[
+          {text:'칭호와 인정', score:{problem:0,cause:0,action:0,share:0,role:-1}},
+          {text:'전문성 유지', score:{problem:0,cause:1,action:0,share:0,role:1}},
+          {text:'현장 문제 해결과 후배/동료에 대한 기여', score:{problem:1,cause:1,action:1,share:2,role:2}},
+          {text:'개인 경력 관리', score:{problem:0,cause:0,action:0,share:0,role:0}}
+        ]
+      },
+      {
+        q:'동료들이 잘 모르는 노하우를 내가 알고 있을 때 보통 어떻게 합니까?',
+        options:[
+          {text:'물어보면 알려준다', score:{problem:0,cause:0,action:0,share:1,role:0}},
+          {text:'팀에 도움이 되면 정리해서 공유할 방법을 생각한다', score:{problem:0,cause:0,action:1,share:2,role:1}},
+          {text:'굳이 먼저 나서진 않는다', score:{problem:0,cause:0,action:0,share:0,role:0}},
+          {text:'내가 쓰는 데 문제 없으면 그대로 둔다', score:{problem:0,cause:0,action:0,share:-1,role:-1}}
+        ]
+      },
+      {
+        q:'현장에서 비효율을 발견했을 때 가장 먼저 드는 생각은?',
+        options:[
+          {text:'다들 이렇게 하니까 괜찮다', score:{problem:-1,cause:-1,action:0,share:0,role:0}},
+          {text:'왜 이렇게 하는지 구조를 보고 싶다', score:{problem:2,cause:2,action:0,share:0,role:1}},
+          {text:'귀찮지만 어쩔 수 없다', score:{problem:0,cause:0,action:-1,share:0,role:0}},
+          {text:'내 업무만 아니면 상관없다', score:{problem:-1,cause:0,action:-1,share:-1,role:-1}}
+        ]
+      },
+      {
+        q:'전문가 역할 수행에 대해 본인과 가장 가까운 태도는?',
+        options:[
+          {text:'선발되면 그때 생각해본다', score:{problem:0,cause:0,action:0,share:0,role:-1}},
+          {text:'선발 전부터 어떤 역할을 할지 고민해볼 수 있다', score:{problem:0,cause:0,action:1,share:0,role:2}},
+          {text:'선발은 받고 싶지만 역할까지는 잘 모르겠다', score:{problem:0,cause:0,action:0,share:0,role:0}},
+          {text:'주어진 일만 잘하면 충분하다', score:{problem:0,cause:0,action:0,share:0,role:-1}}
+        ]
+      }
+    ];
+
+    const mapKey = ['problem','cause','action','share','role'];
+    const labelMap = ['문제 인식력','원인 탐구성','실행 주도성','공유·확산 성향','역할 책임감'];
+
+    const quiz = document.getElementById('quiz');
+    quiz.innerHTML = `
+      <div class="section-title">진단 문항 (총 ${questions.length}문항)</div>
+      ${questions.map((item, idx) => `
+        <div class="question">
+          <div class="q-title"><span class="q-num">Q${idx+1}.</span>${item.q}</div>
+          <div class="options">
+            ${item.options.map((opt, j) => `
+              <label>
+                <input type="radio" name="q${idx}" value="${j}">
+                <span class="opt">${String.fromCharCode(65+j)}. ${opt.text}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')}
+      <div class="actions">
+        <button type="button" class="primary" id="submitBtn">결과 보기</button>
+        <button type="reset" class="ghost">다시 하기</button>
+      </div>
+    `;
+
+    const setBar = (id, score, max) => {
+      document.getElementById(id).textContent = `${score}점`;
+      document.getElementById('b' + id.slice(1)).style.width = `${Math.max(0,(score / max) * 100)}%`;
+    };
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const scores = {problem:0,cause:0,action:0,share:0,role:0};
+      for(let i=0;i<questions.length;i++){
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if(!selected){ alert(`${i+1}번 문항이 선택되지 않았습니다.`); return; }
+        const selectedOpt = questions[i].options[Number(selected.value)].score;
+        Object.keys(scores).forEach(k => scores[k] += selectedOpt[k]);
+      }
+
+      document.getElementById('result').style.display = 'block';
+      setBar('s1', scores.problem, 12);
+      setBar('s2', scores.cause, 12);
+      setBar('s3', scores.action, 12);
+      setBar('s4', scores.share, 12);
+      setBar('s5', scores.role, 12);
+
+      const arr = [scores.problem,scores.cause,scores.action,scores.share,scores.role];
+      const strongIdx = arr.indexOf(Math.max(...arr));
+      const weakIdx = arr.indexOf(Math.min(...arr));
+
+      let typeTitle='', typeComment='';
+      if(scores.problem >= 5 && scores.cause >= 5 && scores.action >= 4){
+        typeTitle='문제 해결형 전문가 후보';
+        typeComment='현장의 문제를 포착하고 원인을 파고들며, 실제 행동으로 연결하려는 성향이 비교적 뚜렷합니다.';
+      } else if(scores.role >= 5 && scores.share >= 4){
+        typeTitle='역할 확산형 전문가 후보';
+        typeComment='전문가 역할에 대한 인식과 동료 기여 성향이 높아, 지식 전파와 팀 내 영향력 측면에서 강점이 기대됩니다.';
+      } else if(scores.cause >= 5 && scores.action < 3){
+        typeTitle='분석형 후보(실행 보완 필요)';
+        typeComment='원인 파악 성향은 있으나 실제 실행 주도성은 추가 확인이 필요합니다.';
+      } else {
+        typeTitle='잠재력형 후보';
+        typeComment='기본 가능성은 있으나 특정 영역 편차가 있어 지원서·면담·현업 의견을 함께 보는 것이 적절합니다.';
+      }
+
+      const tagsEl = document.getElementById('tags');
+      const makeTag = (label, cls) => `<span class="tag ${cls}">${label}</span>`;
+      tagsEl.innerHTML = '';
+      tagsEl.innerHTML += makeTag(`강점: ${labelMap[strongIdx]}`,'good');
+      tagsEl.innerHTML += makeTag(`보완: ${labelMap[weakIdx]}`,'warn');
+      if(scores.role <= 1 || scores.share <= 1) tagsEl.innerHTML += makeTag('칭호 중심 가능성 점검','bad');
+
+      document.getElementById('typeTitle').textContent = typeTitle;
+      document.getElementById('typeComment').textContent = typeComment;
+
+      document.getElementById('interpretation').textContent = `가장 높은 영역은 ${labelMap[strongIdx]}이며, 가장 낮은 영역은 ${labelMap[weakIdx]}입니다. 지원자의 답변 패턴상 ${labelMap[strongIdx]} 측면의 잠재력은 확인되나, ${labelMap[weakIdx]}과 관련된 실제 경험 또는 역할 수행 의지는 추가 확인이 필요합니다.`;
+
+      const points = [];
+      if(scores.problem <= 2) points.push('반복 문제를 스스로 포착하거나 개선 필요성을 느꼈던 실제 사례가 있는지 확인');
+      if(scores.cause <= 2) points.push('현상을 넘어서 원인을 파고들었던 경험이 있는지 확인');
+      if(scores.action <= 2) points.push('아이디어를 실제 개선 활동으로 연결했던 경험이 있는지 확인');
+      if(scores.share <= 2) points.push('노하우를 동료·후배와 공유하거나 확산한 경험이 있는지 확인');
+      if(scores.role <= 2) points.push('현장전문가 역할을 칭호가 아닌 책임으로 이해하고 있는지 확인');
+      if(points.length === 0){
+        points.push('강점 영역이 실제 현장 사례와 일치하는지 검증');
+        points.push('선발 이후 맡고 싶은 역할과 해결하고 싶은 문제를 구체적으로 질문');
+      }
+      document.getElementById('interviewPoints').innerHTML = points.map(p => `<li>${p}</li>`).join('');
+      window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+    });
+  </script>
+</body>
+</html>
