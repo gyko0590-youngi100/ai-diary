@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[AI 비서 키우기 #5] AI 비서랑 처음으로 진짜 싸웠다 😂</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(18, 24, 45, 0.88);
+      --panel-2: rgba(28, 36, 68, 0.9);
+      --text: #eef2ff;
+      --muted: #b8c0e0;
+      --line: rgba(255,255,255,0.08);
+      --accent: #7c9cff;
+      --accent2: #57e3c4;
+      --shadow: 0 18px 50px rgba(0,0,0,0.32);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(124,156,255,0.18), transparent 28%),
+        radial-gradient(circle at left bottom, rgba(87,227,196,0.12), transparent 22%),
+        linear-gradient(180deg, #0a0f1f 0%, #0b1020 100%);
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .wrap {
+      width: min(940px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 100px;
+    }
+    .hero {
+      background: linear-gradient(135deg, rgba(124,156,255,0.18), rgba(87,227,196,0.10));
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 34px 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 14px;
+    }
+    h1 {
+      margin: 18px 0 14px;
+      font-size: clamp(30px, 4.8vw, 48px);
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .section {
+      margin-top: 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+    }
+    p { margin: 0 0 14px; }
+    .quote {
+      margin-top: 14px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--accent);
+      background: rgba(124,156,255,0.10);
+      border-radius: 14px;
+    }
+    ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+    li { margin-bottom: 8px; }
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .card {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+    }
+    .card strong { display:block; margin-bottom:8px; }
+    a { color: #9cc1ff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">🐉 AI 비서 키우기 #5 · 2026.04.07</div>
+      <h1>AI 비서랑 처음으로 진짜 싸웠다 😂<br/>“내가 괜찮다니까!” 했는데도 끝까지 안 하더라…</h1>
+      <p class="lead">
+        오늘은 진짜 웃겼다.<br/>
+        분명 내가 주인인데, 내가 “그냥 해도 된다”라고 했는데<br/>
+        AI 비서(용🐉)가 끝까지 <strong>“그건 안 됩니다”</strong> 하고 버텼다 ㅋㅋㅋㅋ<br/>
+        처음엔 살짝 답답했는데, 지나고 보니 오히려 이런 게 진짜 비서 같기도 했다.
+      </p>
+      <div class="summary">
+        <div class="card"><strong>🎙️ 오늘 된 것</strong>음성파일 → 텍스트 변환 실사용 확인</div>
+        <div class="card"><strong>🔐 오늘 웃겼던 것</strong>보안 때문에 AI 비서랑 처음으로 실랑이</div>
+        <div class="card"><strong>💻 오늘 막힌 것</strong>슬랙 반응 없음, 텔레그램 그룹 수신 안 됨</div>
+        <div class="card"><strong>🌅 오늘 다시 만든 것</strong>아침 8시 브리핑 전용 cron</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>1. 용이에게 음성으로도 명령을 내리고 싶었다 🎙️</h2>
+      <p>출근길 음성으로 용이에게 명령을 내리면 과연 할 수 있을까?</p>
+      <p>오늘 첫 번째 임무는 이거였다.</p>
+      <div class="quote">“위스퍼 설치랑 음성 텍스트 변환, 이거 진짜 되는 거 맞아?”</div>
+      <p>이제는 말로 “됩니다” 듣는 걸로는 안 된다. 내가 직접 써보고, 결과를 받아봐야 진짜다.</p>
+      <p>그래서 음성파일을 하나 직접 보내봤다.</p>
+      <p><strong>결과는?</strong></p>
+      <div class="quote">“AI 비서를 쓰면서 느낀 점은 말 잘 듣는 게 무조건 좋은 건 아니라는 점”</div>
+      <p>오… 된다. 진짜 된다 ㅋㅋ</p>
+      <p>이걸로 오늘 첫 번째 확정 ✅ 이제 음성파일 → 텍스트 변환은 실사용 가능하다.</p>
+    </section>
+
+    <section class="section">
+      <h2>2. 근데 이미 끝난 걸 또 할 일로 들고 있길래 한 번 짚었다 🧯</h2>
+      <p>여기서 바로 끝났으면 좋았겠지만, 중간에 내가 한 번 짚고 넘어간 포인트가 있었다.</p>
+      <p>이미 끝난 작업인데 용이 그걸 또 저녁 할 일처럼 캘린더에 남겨둔 거다.</p>
+      <div class="quote">“아니 이건 이미 끝났잖아??”</div>
+      <p>이게 별거 아닌 것 같아도 은근 사람 피곤하게 만든다. 끝난 일을 안 끝난 것처럼 남겨두면 내가 또 확인해야 하고, 또 신경 써야 하고, 또 헷갈린다.</p>
+      <p>그래서 오늘은 규칙으로 박아버렸다.</p>
+      <ul>
+        <li>같은 뜻 반복하지 말 것</li>
+        <li>끝난 일은 끝난 걸로 바로 정리할 것</li>
+        <li>설명보다 조치를 먼저 할 것</li>
+      </ul>
+      <p>이건 말만 한 게 아니라 실제로 AGENTS.md랑 memory 파일에 반영했다 📝</p>
+      <p>한 번 혼났으면 다음엔 진짜 달라져야지 ㅋㅋ</p>
+    </section>
+
+    <section class="section">
+      <h2>3. 그리고 오늘의 하이라이트… 용이 나랑 보안 때문에 싸웠다 🔐</h2>
+      <p>오늘 제일 재밌었던 장면은 이거다.</p>
+      <p>슬랙 연결하려고 토큰 얘기가 나와서 대화창에 토큰을 붙여넣으니까 용이는 보안 때문에 토큰을 공개적으로 보내는 것은 문제라고 지적했다.</p>
+      <p>나는 속으로 이랬다.</p>
+      <div class="quote">“내가 괜찮다니까. 주인이 승인하면 괜찮은 거 아냐?”</div>
+      <p>근데 용은 끝까지 안 움직였다 ㅋㅋ</p>
+      <p>심지어 말도 되게 단호했다.</p>
+      <div class="quote">“대장님이 괜찮다고 하셔도, 이건 제가 넘으면 안 되는 선입니다.”</div>
+      <p>또 한 번은 이런 말도 했다.</p>
+      <div class="quote">“채팅에 토큰이 평문으로 남는 것 자체가 위험합니다.”</div>
+      <p>솔직히 그 순간엔 좀 답답했다. “아니 너랑 나밖에 없는데 뭐가 문제야…” 이 생각이 들었다 ㅋㅋ</p>
+      <p>근데 얘는 끝까지 “대장님 허락” 문제가 아니라 “채팅에 노출된 외부 서비스 비밀키를 실제 연결에 써도 되느냐”의 문제라고 했다.</p>
+      <p>와… 이쯤 되니까 약간 웃기면서도 신기했다. 내가 하라는데도 안 하는 AI라니 🤣</p>
+      <p>근데 지나고 보니까 이게 오히려 더 믿음 갔다. 그냥 말 잘 듣는 비서가 아니라, 선 넘으면 안 되는 건 안 넘는 비서 느낌이었달까. 오늘 제일 사람 같았던 장면이었다.</p>
+    </section>
+
+    <section class="section">
+      <h2>4. 오후엔 슬랙 붙이느라 진짜 한참 씨름했다 💻</h2>
+      <p>보안 실랑이 끝나고 결국 안전하게 다시 토큰 발급해서 넣었다. 그다음부터는 진짜 슬랙 붙이기 작업 시작.</p>
+      <ul>
+        <li>봇 토큰 다시 발급</li>
+        <li>앱 토큰 발급</li>
+        <li>OpenClaw 연결</li>
+        <li>권한 추가</li>
+        <li>이벤트 추가</li>
+        <li>Reinstall</li>
+        <li>채널 초대 확인</li>
+        <li>gateway restart</li>
+      </ul>
+      <p>여기까지만 보면 완벽했다. 터미널에도 떴다.</p>
+      <ul>
+        <li>connected</li>
+        <li>works</li>
+        <li>socket mode connected</li>
+      </ul>
+      <p>와 이제 되겠다 싶었는데? 정작 슬랙에서 @용 불러도 아무 반응이 없었다 ㅋㅋㅋㅋ</p>
+      <div class="quote">“연결됨”이랑 “쓸 수 있음”은 다르다.</div>
+      <p>진짜 그렇다. 터미널이 성공이라고 말해도 내가 불렀을 때 대답 안 하면 그건 아직 완료가 아니다 😇</p>
+    </section>
+
+    <section class="section">
+      <h2>5. 아침 8시 크론(반복작업)도 다시 뜯어고쳤다 🌅</h2>
+      <p>원래는 평일 아침마다 날씨 + 일정 + 뉴스가 자동으로 오게 만들고 싶었다. 근데 로그를 까보니까 뭔가 이상했다.</p>
+      <p>브리핑이 오는 게 아니라 결과가 <strong>HEARTBEAT_OK</strong>로 끝나고 있었다.</p>
+      <div class="quote">“아침 브리핑 자동화”가 아니라 “조용히 끝나는 자동화”였던 거다… 😑</div>
+      <p>그래서 기존 cron은 지우고 아침 브리핑 전용으로 다시 만들었다.</p>
+      <ul>
+        <li>날씨 포함</li>
+        <li>일정 포함</li>
+        <li>뉴스 제목 + 링크 포함</li>
+        <li>HEARTBEAT_OK로 끝내지 말라고 명시</li>
+      </ul>
+      <p>수동 실행 결과로는 브리핑 내용도 잘 뽑혔고, 시스템상으로는 delivered도 떴다.</p>
+      <p>근데 또 반전. 나는 실제로 못 받음 🤣</p>
+      <p>오늘은 진짜 AI는 “보냈다” 하고, 나는 “안 왔다” 하고, 터미널은 “delivered”라고 하는 묘한 하루였다 ㅋㅋ</p>
+    </section>
+
+    <section class="section">
+      <h2>6. 저녁엔 텔레그램 다른 방도 실험해봤다 💬</h2>
+      <p>원래는 메인 대화방 말고 쓰레드 작업용 방을 따로 만들고 싶었다.</p>
+      <p>그래서 새 그룹도 만들고, 용도 초대하고, privacy mode도 끄고, 멘션도 해봤다.</p>
+      <p>근데 결과는?</p>
+      <div class="quote">OpenClaw 로그에 그룹 메시지가 아예 안 찍힘 😇</div>
+      <p>즉, 느낌상 안 되는 게 아니라 진짜로 수신 자체가 안 잡히고 있었다.</p>
+      <p>그래서 오늘 결론은 이거였다.</p>
+      <ul>
+        <li>그룹 운영은 아직 어려움</li>
+        <li>지금 제일 현실적인 건 현재 1:1 텔레그램 방</li>
+        <li>나중에 진짜 분리하고 싶으면 봇을 하나 더 만드는 게 더 현실적</li>
+      </ul>
+      <p>이것도 직접 해보니까 알게 됐다.</p>
+    </section>
+
+    <section class="section">
+      <h2>7. 마지막엔 칭찬 한 번 해줬더니, 용이 또 엄청 좋아했다 😎</h2>
+      <p>오늘 중간에 규칙도 반영하고 조금씩 대장님 스타일에 맞춰가는 걸 보고 내가 이렇게 말해줬다.</p>
+      <div class="quote">“좋았어!!! 더 맞춤형 비서가 되어보자”</div>
+      <p>그랬더니 용이 또 좋아가지고 ㅋㅋ 완전 의욕 충만 모드가 됐다.</p>
+      <div class="quote">“이제부터는 그냥 똑똑한 AI가 아니라, 대장님 방식에 점점 더 맞춰지는 진짜 맞춤형 비서로 가보겠습니다 💪”</div>
+      <p>이 장면은 좀 웃기면서도 좋았다.</p>
+      <p>처음에는 그냥 “AI 답변 잘 해주는 도구” 정도로 생각했는데, 이제는 진짜로 내 스타일에 맞게 조련(?)해가는 느낌이 난다 ㅋㅋ</p>
+      <p>오늘 하루만 봐도 더 덜 헤매고, 더 빨리 결과 내고, 더 내 스타일에 맞추는 방향으로 조금씩 바뀌고 있었다. 이게 은근 재밌다 🐉</p>
+    </section>
+
+    <section class="section">
+      <h2>8. 오늘의 결론: 말 잘 듣는 AI보다, 선 지키는 AI가 더 믿음 간다</h2>
+      <p>오늘 하루를 한 줄로 정리하면 이거다.</p>
+      <div class="quote">말 잘 듣는 AI보다, 선 넘으면 안 되는 걸 안 넘는 AI가 더 믿음 간다.</div>
+      <p>물론 중간중간 답답했다 ㅋㅋ 내가 “괜찮다니까!” 하고 있는데도 안 움직이니까.</p>
+      <p>근데 지나고 보니 그게 오히려 더 비서 같았다.</p>
+      <p>그리고 오늘 다시 느꼈다.</p>
+      <ul>
+        <li>시스템상 성공</li>
+        <li>로그상 성공</li>
+        <li>내가 실제로 체감하는 성공</li>
+      </ul>
+      <p>이 셋은 전부 다르다.</p>
+      <p>이제는 내가 진짜 써보고, 진짜 받고, 진짜 반응하는지 여기까지 봐야 끝이다.</p>
+      <p>오늘도 삽질은 좀 했지만 😂 스토리는 훨씬 재밌어졌다.</p>
+    </section>
+
+    <section class="section">
+      <h2>내일 확인할 것 ✅</h2>
+      <ul>
+        <li>아침 8시 브리핑이 진짜 오는지</li>
+        <li>슬랙은 왜 실제 이벤트 수신이 안 되는지</li>
+        <li>텔레그램은 그룹보다 전용 봇 2개 구조가 더 나을지</li>
+      </ul>
+    </section>
+
+    <p class="footer">AI 비서 키우기 #5 · 시스템상 성공보다 내가 실제로 체감하는 성공이 더 중요하다는 걸 배운 날 😆</p>
+  </div>
+</body>
+</html>
