@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[AI 비서 키우기 #6] AI 비서 슬랙 연결, 왜 "연결 성공"인데 실제로는 안될까?😵‍💫</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(18, 24, 45, 0.88);
+      --panel-2: rgba(28, 36, 68, 0.9);
+      --text: #eef2ff;
+      --muted: #b8c0e0;
+      --line: rgba(255,255,255,0.08);
+      --accent: #7c9cff;
+      --shadow: 0 18px 50px rgba(0,0,0,0.32);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(124,156,255,0.18), transparent 28%),
+        radial-gradient(circle at left bottom, rgba(87,227,196,0.12), transparent 22%),
+        linear-gradient(180deg, #0a0f1f 0%, #0b1020 100%);
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .wrap { width: min(940px, calc(100% - 32px)); margin: 0 auto; padding: 56px 0 100px; }
+    .hero {
+      background: linear-gradient(135deg, rgba(124,156,255,0.18), rgba(87,227,196,0.10));
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 34px 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px;
+      border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--muted); font-size: 14px;
+    }
+    h1 { margin: 18px 0 14px; font-size: clamp(30px, 4.8vw, 48px); line-height: 1.2; }
+    .lead { margin: 0; color: var(--muted); font-size: 18px; }
+    .section {
+      margin-top: 22px; background: var(--panel); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 26px 24px; box-shadow: var(--shadow); backdrop-filter: blur(10px);
+    }
+    h2 { margin: 0 0 14px; font-size: 24px; }
+    p { margin: 0 0 14px; }
+    ul { margin: 8px 0 0; padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .quote {
+      margin-top: 14px; padding: 18px 20px; border-left: 4px solid var(--accent);
+      background: rgba(124,156,255,0.10); border-radius: 14px;
+    }
+    .footer { margin-top: 28px; color: var(--muted); font-size: 14px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">🐉 AI 비서 키우기 #6 · 2026.04.09</div>
+      <h1>AI 비서 슬랙 연결,<br/>왜 “연결 성공”인데 실제로는 안될까?😵‍💫</h1>
+      <p class="lead">
+        어제는 진짜 <strong>“된다”와 “안 된다”가 하루 종일 왔다 갔다 한 날</strong>이었다.<br/>
+        슬랙은 결국 붙였고, Threads는 끝내 못 붙였다 😂<br/>
+        근데 그 과정에서 배운 건 생각보다 컸다. AI 비서를 키우는 건 기능을 붙이는 게 아니라, <strong>세션과 구조를 설계하는 일</strong>이라는 것.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>1. 슬랙은 결국 연결했다 💬</h2>
+      <p>어제 제일 먼저 크게 진전된 건 슬랙이었다.</p>
+      <p>처음엔 진짜 안 되는 줄 알았다. 토큰 다시 넣고, 이벤트 설정하고, 권한 넣고, reinstall 하고, pairing까지 했는데 계속 반응이 없으니까 “이거 OpenClaw 자체 문제 아냐?” 싶었다.</p>
+      <p>근데 끝까지 파보니까 완전 실패는 아니었다.</p>
+      <ul>
+        <li>DM은 된다 ✅</li>
+        <li>채널은 안 된다 ❌</li>
+      </ul>
+      <p>여기서 핵심이 보였다. 슬랙은 그냥 “연결 성공” 하나로 끝나는 게 아니라</p>
+      <ul>
+        <li>앱 설정</li>
+        <li>pairing</li>
+        <li>policy</li>
+      </ul>
+      <p>이 세 개가 다 맞아야 내가 원하는 방식으로 제대로 움직였다.</p>
+      <p>어제 이거 하나로도 꽤 많이 배웠다. 특히 <strong>DM 성공과 채널 성공은 완전히 다른 문제</strong>라는 걸 몸으로 배웠다.</p>
+    </section>
+
+    <section class="section">
+      <h2>2. Threads 자동 발행은 생각보다 훨씬 더 어려웠다 🧵</h2>
+      <p>슬랙이 어느 정도 풀리니까 욕심이 생겼다.</p>
+      <div class="quote">“좋아, 그럼 이제 Threads도 자동으로 올려보자.”</div>
+      <p>여기서부터 본격 삽질이 시작됐다 ㅋㅋ</p>
+      <ul>
+        <li>Playwright 설치</li>
+        <li>Chrome 프로필 붙이기</li>
+        <li>디버깅 포트 열기</li>
+        <li>계정 세션 맞추기</li>
+        <li>탭 찾기</li>
+        <li>새 탭 열기</li>
+        <li>다시 붙기</li>
+      </ul>
+      <p>겉으로 보면 한 줄짜리 자동화 같았는데 실제로는 <strong>브라우저 세션 하나 안정적으로 잡는 것</strong>부터가 일이었다.</p>
+      <p>특히 제일 힘들었던 건 내가 보고 있는 계정이랑 자동화가 붙는 계정이 다를 수 있다는 점이었다.</p>
+      <p>나는 <strong>gy.go_0905</strong>로 올리고 싶은데 자동화는 자꾸 다른 계정 쪽으로 붙으니까 이건 그냥 “스크립트 좀 고치면 되겠지” 수준이 아니었다.</p>
+      <p>어제 Threads는 결국 못 붙였다. 근데 얻은 건 있었다.</p>
+      <div class="quote">자동화에서 중요한 건 코드보다 <strong>올바른 세션을 안정적으로 붙잡는 것</strong>이라는 점.</div>
+      <p>이건 진짜 크게 배웠다.</p>
+    </section>
+
+    <section class="section">
+      <h2>3. 그래서 “백그라운드 세션” 개념까지 생각하게 됐다 ⚙️</h2>
+      <p>어제 Threads 붙이다가 결국 여기까지 생각이 갔다.</p>
+      <p>내가 진짜 원하는 건 맥미니 앞에 앉아서 터미널 치는 게 아니었다.</p>
+      <p>원한 건 이거였다.</p>
+      <ol>
+        <li>채팅창에서 초안 요청</li>
+        <li>내가 승인</li>
+        <li>용이 뒤에서 알아서 발행</li>
+        <li>결과만 보고</li>
+      </ol>
+      <p>즉, <strong>사람은 지시만 하고 AI는 뒤에서 일하는 구조</strong>.</p>
+      <p>이걸 설명하려고 보니까 결국 “백그라운드 세션”이라는 개념으로 정리되더라.</p>
+      <p>쉽게 말하면 내가 보는 메인 채팅은 지시하는 곳이고, 용은 뒤에서 따로 돌아가는 실행 세션에서 브라우저 열고, 로그인 확인하고, 업로드하고, 로그 남기는 거다.</p>
+      <p>이 개념을 잡고 나니까 왜 지금까지 자꾸 꼬였는지도 좀 이해가 됐다. 문제는 기능이 아니라 <strong>세션을 분리하고 연결하는 설계</strong>였던 거다.</p>
+    </section>
+
+    <section class="section">
+      <h2>4. 운영 규칙도 더 강화했다 📌</h2>
+      <p>어제는 단순히 기능만 붙인 게 아니라 운영 방식도 좀 더 다듬었다.</p>
+      <p>특히 이번에 반영한 건 이런 것들이다.</p>
+      <ul>
+        <li>같은 삽질 2~3번 반복되면 plateau로 판단</li>
+        <li>초안/설정은 keep or revert 판단</li>
+        <li>외부 발행/비용/반복 실행은 guard</li>
+        <li>시작 전에 지금이 설정인지 실행인지 검증인지 먼저 구분</li>
+        <li>대장님이 이미 승인한 흐름이면 중간 확인 다시 넣지 말 것</li>
+        <li>자동화는 맥미니 앞 수동 구조 말고, 채팅 승인형 백그라운드 구조를 기본 목표로 설계할 것</li>
+      </ul>
+      <p>이런 게 하나씩 쌓일수록 용이 그냥 답변 잘하는 AI가 아니라 <strong>내 스타일에 맞게 일하는 비서</strong>가 되어가는 느낌이 든다.</p>
+    </section>
+
+    <section class="section">
+      <h2>5. 어제의 결론: 기능보다 세션, 답변보다 구조</h2>
+      <p>어제 하루를 한 줄로 정리하면 이거다.</p>
+      <div class="quote">AI 비서를 키우는 건 기능 붙이기보다 <strong>세션과 구조를 설계하는 일</strong>이다.</div>
+      <p>슬랙은 끝내 붙였고, Threads는 끝내 못 붙였다.</p>
+      <p>근데 웃긴 건 실패한 Threads 쪽에서 오히려 더 많이 배웠다는 점이다.</p>
+      <p>예전엔 AI가 답만 잘하면 된다고 생각했는데, 이제는</p>
+      <ul>
+        <li>어디서 실행되는지</li>
+        <li>어떤 계정으로 붙는지</li>
+        <li>어떤 세션이 기준인지</li>
+        <li>사람이 어디까지 개입해야 하는지</li>
+      </ul>
+      <p>이걸 같이 설계해야 진짜 비서처럼 쓸 수 있다는 걸 점점 알게 된다.</p>
+      <p>AI 비서 키우기, 생각보다 훨씬 손이 많이 가지만 그래서 더 재밌다 😎</p>
+    </section>
+
+    <section class="section">
+      <h2>내일 할 일 ✅</h2>
+      <ul>
+        <li>Threads 자동 발행 구조 다시 정리</li>
+        <li>세션 분리/연결 구조 더 명확히 설계</li>
+        <li>여행 가기 전 필요한 것들 최종 점검</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>📌 추가</h2>
+      <p>4/9일부터 14일까지는 대만 여행 일정으로 쉽니다!</p>
+    </section>
+
+    <p class="footer">AI 비서 키우기 #6 · 연결 성공보다 실제 동작, 기능보다 세션과 구조가 더 중요했다 😵‍💫</p>
+  </div>
+</body>
+</html>
