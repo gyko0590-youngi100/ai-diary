@@ -1,0 +1,10 @@
+[
+  {
+    "name": "고규영",
+    "employeeId": "235878",
+    "department": "MGB",
+    "role": "admin",
+    "active": true,
+    "lastLogin": "2026-04-15T21:20:00+09:00"
+  }
+]
