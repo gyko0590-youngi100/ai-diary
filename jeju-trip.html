@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제주 여행 실전 계획표 | 2026.05.14 - 05.18</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --bg-card: #16161f;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090a0;
+      --accent-green: #4ade80;
+      --accent-blue: #60a5fa;
+      --accent-purple: #a78bfa;
+      --accent-pink: #f472b6;
+      --accent-yellow: #fbbf24;
+      --border-color: #2a2a3a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+    .hero {
+      padding: 70px 20px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(96, 165, 250, 0.16) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(74, 222, 128, 0.14) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; }
+    .badge {
+      display: inline-block;
+      padding: 8px 18px;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #4ade80, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
+    .section { margin-top: 28px; }
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .mini {
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .mini h4 {
+      margin-bottom: 8px;
+      color: var(--accent-blue);
+      font-size: 1rem;
+    }
+    .day-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+    .day-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .day-title { font-size: 1.3rem; font-weight: 700; }
+    .day-theme { color: var(--accent-purple); font-size: 0.95rem; }
+    .timeline { display: grid; gap: 12px; }
+    .timeline-item {
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--bg-tertiary);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .timeline-item strong { color: var(--accent-yellow); }
+    .time-label { color: var(--accent-pink); font-weight: 700; margin-bottom: 4px; }
+    .tip {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: rgba(96, 165, 250, 0.08);
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      border-radius: 12px;
+      color: var(--text-secondary);
+    }
+    .footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 16px 70px; }
+      .card, .day-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">2026.05.14 ~ 2026.05.18</div>
+      <h1>🍊 제주 여행 실전 계획표</h1>
+      <p class="subtitle">대장님 + 친구 취향 반영, 실행 가능한 동선 중심 초안</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section">
+      <h2 class="section-title">📋 여행 기본 정보</h2>
+      <div class="card grid">
+        <div class="mini">
+          <h4>✈️ 항공</h4>
+          <p>5/14 김포 15:20 → 제주 16:45</p>
+          <p>5/18 제주 14:30 → 김포 15:45</p>
+          <p>이스타항공 / 예약번호 F3GESV</p>
+        </div>
+        <div class="mini">
+          <h4>🚗 이동</h4>
+          <p>렌트카 이용</p>
+          <p>인수: 도착 후 30분 이내</p>
+          <p>반납: 출발 1시간 전</p>
+        </div>
+        <div class="mini">
+          <h4>🎯 핵심 목적</h4>
+          <p>수너베러, 9.81파크</p>
+          <p>30분 이내 자연 산책</p>
+          <p>시장 둘러보기</p>
+        </div>
+        <div class="mini">
+          <h4>🍽 먹고 싶은 것</h4>
+          <p>자매국수, 돔베고기</p>
+          <p>회, 딱새우</p>
+          <p>먹방 > 관광 > 휴식</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🏨 숙소 운영 추천</h2>
+      <div class="card">
+        <p><strong>1차 숙소:</strong> 제주시 연동/노형 권역 2박</p>
+        <p><strong>이유:</strong> 공항, 자매국수, 동문시장 접근이 좋고 첫날 피로를 줄이기 좋음</p>
+        <br>
+        <p><strong>2차 숙소:</strong> 애월/서쪽 권역 2박</p>
+        <p><strong>이유:</strong> 9.81파크, 서쪽 드라이브, 마지막 밤 숙소 휴식에 유리함</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🗓 날짜별 실행안</h2>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">5/14(수) 제주 도착일</div>
+          <div class="day-theme">첫날은 무조건 가볍게</div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="time-label">오후</div>
+            <p><strong>제주공항 도착 → 렌트카 인수 → 제주시 숙소 체크인</strong></p>
+            <p>예상 이동: 공항 → 숙소 약 15~25분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">저녁</div>
+            <p><strong>자매국수로 이동해 고기국수/돔베고기 먹기</strong></p>
+            <p>주소: 제주 제주시 항골남길 46</p>
+            <p>예상 이동: 제주시 숙소 → 자매국수 약 10~20분</p>
+            <p>추천 메뉴: 고기국수, 비빔국수, 돔베고기</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">저녁 이후</div>
+            <p><strong>컨디션 되면 동문시장 가볍게 둘러보기</strong></p>
+            <p>주소: 제주 제주시 관덕로14길 20</p>
+            <p>예상 이동: 자매국수 → 동문시장 약 20~25분</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">5/15(목) 제주시 먹방 + 시장</div>
+          <div class="day-theme">중복 없이 맛집 분산</div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="time-label">오전</div>
+            <p><strong>용담해안도로 또는 도두 해안 쪽으로 이동해 30분 이내 산책하기</strong></p>
+            <p>예상 이동: 제주시 숙소 → 산책 코스 약 15~20분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">점심</div>
+            <p><strong>돔베고기 전문점으로 이동해 식사하기</strong></p>
+            <p>메뉴 방향: 돔베고기, 수육백반, 국수 제외한 단품 위주</p>
+            <p>예상 이동: 산책 코스 → 점심 식당 약 15~25분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">오후</div>
+            <p><strong>동문시장으로 이동해 기념품/간식 구경하기</strong></p>
+            <p>주소: 제주 제주시 관덕로14길 20</p>
+            <p>예상 이동: 점심 식당 → 동문시장 약 15~20분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">저녁</div>
+            <p><strong>회 또는 딱새우 식당으로 이동해 먹거나 포장해 숙소에서 먹기</strong></p>
+            <p>예상 이동: 동문시장 → 식당 또는 숙소 약 10~20분</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">5/16(금) 서쪽 이동일</div>
+          <div class="day-theme">수너베러 중심</div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="time-label">오전</div>
+            <p><strong>제주시 숙소 체크아웃 후 수너베러로 이동하기</strong></p>
+            <p>주소: 제주 제주시 천수동2길 29</p>
+            <p>예상 이동: 제주시 숙소 → 수너베러 약 15~25분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">점심</div>
+            <p><strong>수너베러에서 식사하기</strong></p>
+            <p>추천 메뉴: 빠에야, 라자냐, 파스타</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">오후</div>
+            <p><strong>애월/서쪽 숙소로 이동해 체크인하고 해안 드라이브하기</strong></p>
+            <p>예상 이동: 수너베러 → 애월 숙소 약 30~40분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">저녁</div>
+            <p><strong>숙소 컨디션 보고 회 또는 딱새우를 포장하거나 근처 식당에서 먹기</strong></p>
+            <p>숙소에서 쉬는 시간 확보</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">5/17(토) 9.81파크 + 여유일</div>
+          <div class="day-theme">활동은 오전, 회복은 오후</div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="time-label">오전</div>
+            <p><strong>9.81파크로 이동해 액티비티 즐기기</strong></p>
+            <p>주소: 제주 제주시 애월읍 천덕로 880-24</p>
+            <p>예상 이동: 애월 숙소 → 9.81파크 약 15~25분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">점심</div>
+            <p><strong>근처 식당으로 이동해 가볍게 식사하기</strong></p>
+            <p>9.81파크 이후 너무 무겁지 않게</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">오후</div>
+            <p><strong>서쪽 바다 보며 드라이브하고 30분 이내 자연 산책하기</strong></p>
+            <p>예상 이동: 점심 식당 → 산책 코스 약 15~20분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">저녁</div>
+            <p><strong>마지막 밤 여유롭게 보내기, 못 먹은 메뉴 보충하기</strong></p>
+            <p>피곤하면 카페보다 숙소 휴식 우선</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-title">5/18(일) 복귀일</div>
+          <div class="day-theme">공항 스트레스 줄이기</div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="time-label">오전</div>
+            <p><strong>체크아웃 후 공항 방향으로 이동하기</strong></p>
+            <p>예상 이동: 애월 숙소 → 제주공항 약 35~50분</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">점심</div>
+            <p><strong>공항 가기 전 가볍게 마지막 식사하기</strong></p>
+            <p>무리한 관광 금지</p>
+          </div>
+          <div class="timeline-item">
+            <div class="time-label">오후</div>
+            <p><strong>렌트카 반납 후 공항으로 이동해 탑승하기</strong></p>
+            <p>렌트 반납 목표 13:30 전후 / 항공 ZE275 14:30 출발</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">💡 메모</h2>
+      <div class="card">
+        <p>이 일정은 <strong>대장님 취향(맛집 + 덜 힘든 일정 + 휴식)</strong>과 <strong>친구 취향(먹방 > 관광 > 휴식, 구조화된 여유 일정)</strong>을 같이 반영한 1차 실전안입니다.</p>
+        <div class="tip">다음 단계에서는 식당/숙소를 실제 후보명으로 고정하고, 구글맵 링크까지 붙이면 더 실행형으로 올라갑니다.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    제주 여행 실전 계획표 초안 · 주소/이동시간/메뉴까지 반영한 실행형 1차본
+  </footer>
+</body>
+</html>
